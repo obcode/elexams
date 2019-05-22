@@ -14,11 +14,22 @@
     margin: 2em auto;
     text-align: center;
   }
+  td {
+    vertical-align: 0pt;
+  }
 </style>
 
 <main>
   <h1>Prüfungsplanung SS19</h1>
-  <!-- <Validation /> -->
   <!-- <Exams/> -->
-  <Plan />
+  <table>
+    <tr>
+      <td>
+        <Plan />
+      </td>
+      <td>
+        <Validation />
+      </td>
+    </tr>
+  </table>
 </main>

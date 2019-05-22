@@ -1,16 +1,11 @@
 <script>
-  let validation = [];
-  const fetchValidation = async () => {
-    let response = await fetch("http://localhost:8080/validation", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(["ValidateSchedule"])
-    });
-    validation = await response.json();
-  };
-  fetchValidation();
+  import { validation, fetchValidation } from "../store.js";
+  let yes = false;
+  let vali = [];
+  // fetchValidation();
+  validation.subscribe(v => {
+    vali = v;
+  });
 </script>
 
 <style>
@@ -25,15 +20,23 @@
   }
 </style>
 
-<h1>Validation</h1>
+<label>
+  <input type="checkbox" bind:checked={yes} />
+  Show Validation
+</label>
 
-{#if validation.length === 0}
-  <p>Validation loading...</p>
-{:else}
-  <h2>{validation.result}</h2>
-  <ul>
-    {#each validation.brokenConstraints as val}
-      <li class={val.tag}> {val.contents} </li>
-    {/each}
-  </ul>
+{#if yes}
+  <h1>Validation</h1>
+
+  {#if vali.length === 0}
+    <p>Validation loading...</p>
+  {:else}
+    <h2>{vali.result}</h2>
+    <ul>
+      {#each vali.brokenConstraints as val}
+        <li class={val.tag}> {val.contents} </li>
+      {/each}
+    </ul>
+  {/if}
+
 {/if}

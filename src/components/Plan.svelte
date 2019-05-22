@@ -23,33 +23,6 @@
     const d = new Date(date);
     return d.getDay() === 5;
   }
-
-  // Drag and Drop
-
-  function allowDropExam(ev) {
-    // if (
-    //   ev.currentTarget.classList.contains("slot") ||
-    //   ev.currentTarget.className === "unscheduled"
-    // ) {
-    //   ev.preventDefault();
-    // }
-  }
-
-  function dropExam(ev) {
-    // var data = parseInt(ev.dataTransfer.getData("text"));
-    // var day = parseInt(ev.currentTarget.getAttribute("data-day"));
-    // var slot = parseInt(ev.currentTarget.getAttribute("data-slot"));
-    // let dropped = addExamToSlot(data, day, slot);
-    // if (dropped) {
-    //   ev.currentTarget.appendChild(document.getElementById(data));
-    //   if (ev.currentTarget.className === "outer") {
-    //     document.getElementById(data).className = "inner";
-    //   } else if (ev.currentTarget.className === "outerUnscheduled") {
-    //     document.getElementById(data).className = "innerUnscheduled";
-    //   }
-    //   _fetchValidation();
-    // }
-  }
 </script>
 
 <style>
@@ -116,9 +89,7 @@
               id="slot_{dayIndex}_{slotIndex}"
               class="slot"
               data-day={dayIndex}
-              data-slot={slotIndex}
-              ondrop="dropExam(event)"
-              ondragover="allowDropExam(event)">
+              data-slot={slotIndex}>
               <Slot {dayIndex} {slotIndex} />
             </div>
           </td>
