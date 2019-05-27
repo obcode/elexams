@@ -35,3 +35,5 @@ export const setConflictingSlots = async ancode => {
 };
 
 export const clickedExamAnCode = writable(0);
+
+export const showRegisteredGroups = writable(false);

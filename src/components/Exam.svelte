@@ -6,7 +6,8 @@
     clickedExamAnCode,
     conflictingSlots,
     setConflictingSlots,
-    resetConflicting
+    resetConflicting,
+    showRegisteredGroups
   } from "../store.js";
   import { get } from "svelte/store";
   import { createEventDispatcher } from "svelte";
@@ -26,10 +27,17 @@
 
   function setConflicts() {
     resetConflicting.update(x => x + 1);
-    const c = get(conflictingAncodes);
-    setConflictingSlots(exam.anCode);
-    conflictingAncodes.set(exam.conflictingAncodes);
-    clickedExamAnCode.set(exam.anCode);
+    if (clicked) {
+      clicked = false;
+      conflictingSlots.set([]);
+      conflictingAncodes.set([]);
+      clickedExamAnCode.set(0);
+    } else {
+      const c = get(conflictingAncodes);
+      setConflictingSlots(exam.anCode);
+      conflictingAncodes.set(exam.conflictingAncodes);
+      clickedExamAnCode.set(exam.anCode);
+    }
   }
 
   clickedExamAnCode.subscribe(ac => {
@@ -56,6 +64,10 @@
     conflicting = false;
     studsWithConflicts = 0;
   });
+
+  let registeredGroup = false;
+
+  showRegisteredGroups.subscribe(b => (registeredGroup = b));
 
   function dragStart(event) {
     dragged = true;
@@ -101,7 +113,7 @@
     display: none;
   }
   .clicked {
-    background-color: green;
+    background-color: rgb(255, 181, 8);
   }
 
   .name {
@@ -162,6 +174,23 @@
     border-bottom: 2px rgb(226, 69, 12) solid;
     border-radius: 1px;
   }
+  .registeredGroup {
+    background-color: red;
+  }
+  .GO,
+  .GN {
+    background-color: rgb(163, 163, 163);
+  }
+  .IB,
+  .IC,
+  .IF {
+    background-color: burlywood;
+  }
+  .IG,
+  .IN,
+  .IS {
+    background-color: violet;
+  }
 </style>
 
 <div
@@ -187,8 +216,14 @@
   {#if conflicting}
     Student-Conflicts:
     <span class="conflictingStudents">{studsWithConflicts}</span>
+  {:else if registeredGroup}
+    {#each exam.registeredGroups as registeredGroup, index}
+      {#if index > 0},{/if}
+      <span class="registeredGroup {registeredGroup.registeredGroupDegree}">
+         {registeredGroup.registeredGroupDegree}({registeredGroup.registeredGroupStudents})
+      </span>
+    {/each}
   {:else}
     <br />
-    <span class="empty" />
   {/if}
 </div>

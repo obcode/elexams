@@ -2,7 +2,12 @@
   import Slot from "./Slot.svelte";
   import ExamDetails from "./ExamDetails.svelte";
   import Unscheduled from "./Unscheduled.svelte";
-  import { refetchExams, fetchValidation } from "../store.js";
+  import Validation from "./Validation.svelte";
+  import {
+    refetchExams,
+    fetchValidation,
+    showRegisteredGroups
+  } from "../store.js";
 
   let semesterConfig;
   const fetchSemesterConfig = async () => {
@@ -11,7 +16,9 @@
   };
   fetchSemesterConfig();
 
-  let info = 1;
+  function toggleShowRegisteredGroups() {
+    showRegisteredGroups.update(b => !b);
+  }
 
   function isGOSlot(dayIndex, slotIndex) {
     for (const goSlot of semesterConfig.goSlots) {
@@ -42,7 +49,15 @@
     if (jsonResult) {
       refetchExams.set([]);
       fetchValidation();
-      alert(JSON.stringify(jsonResult));
+      if (jsonResult[0]) {
+        let output = "Erfolgreich!!\n";
+        for (const info of jsonResult[1]) {
+          output += `\n${info}`;
+        }
+        alert(output);
+      } else {
+        alert(JSON.stringify(jsonResult));
+      }
     } else {
       alert(`Cannot reload Plan\n ${JSON.stringify(jsonResult)}`);
     }
@@ -50,12 +65,17 @@
 </script>
 
 <style>
-  td,
-  table,
-  th {
+  hr {
+    border: 1px solid red;
+  }
+  .planTable {
     border-collapse: collapse;
     user-select: none;
     border: 1px solid black;
+    vertical-align: top;
+    font-size: 12px;
+  }
+  .validation {
     vertical-align: top;
     font-size: 12px;
   }
@@ -93,57 +113,59 @@
 {#if semesterConfig === undefined}
   Loading...
 {:else}
+  <h1>Prüfungsplan {semesterConfig.semester}</h1>
   <button on:click={reloadPlan}>Reload Plan from Server</button>
   <label>
-    <input type="radio" bind:group={info} value={1} />
-    Details
+    <input type="checkbox" on:click={toggleShowRegisteredGroups} />
+    Show Registered Groups
   </label>
-  <label>
-    <input type="radio" bind:group={info} value={2} />
-    Konflikte
-  </label>
-  <label>
-    <input type="radio" bind:group={info} value={3} />
-    Alle Prüfungen eines Prüfers
-  </label>
-  <h1>Prüfungsplan {semesterConfig.semester}</h1>
-  <ExamDetails />
   <table>
     <tr>
-      <th />
-      {#each semesterConfig.examDays as examDay, index}
-        <th class="days">
-           {dateString(examDay)}
-          <br />
-          ({index})
-        </th>
-        {#if weekend(examDay)}
-          <th class="weekend" />
-        {/if}
-      {/each}
+      <td>
+        <table class="planTable">
+          <tr class="planTable">
+            <th />
+            {#each semesterConfig.examDays as examDay, index}
+              <th class="planTable days">
+                 {dateString(examDay)}
+                <br />
+                ({index})
+              </th>
+              {#if weekend(examDay)}
+                <th class="planTable weekend" />
+              {/if}
+            {/each}
+          </tr>
+          {#each semesterConfig.slotsPerDay as slot, slotIndex}
+            <tr>
+              <td class="planTable times">
+                 {slot}
+                <br />
+                ({slotIndex})
+              </td>
+              {#each semesterConfig.examDays as examDay, dayIndex}
+                <td class="planTable exams">
+                  <div id="slot_{dayIndex}_{slotIndex}" class="slot">
+                    <Slot
+                      {dayIndex}
+                      {slotIndex}
+                      goSlot={isGOSlot(dayIndex, slotIndex)} />
+                  </div>
+                </td>
+                {#if weekend(examDay)}
+                  <td class="planTable weekend" />
+                {/if}
+              {/each}
+            </tr>
+          {/each}
+        </table>
+        <Unscheduled />
+      </td>
+      <td class="validation">
+        <ExamDetails />
+        <hr />
+        <Validation />
+      </td>
     </tr>
-    {#each semesterConfig.slotsPerDay as slot, slotIndex}
-      <tr>
-        <td class="times">
-           {slot}
-          <br />
-          ({slotIndex})
-        </td>
-        {#each semesterConfig.examDays as examDay, dayIndex}
-          <td class="exams">
-            <div id="slot_{dayIndex}_{slotIndex}" class="slot">
-              <Slot
-                {dayIndex}
-                {slotIndex}
-                goSlot={isGOSlot(dayIndex, slotIndex)} />
-            </div>
-          </td>
-          {#if weekend(examDay)}
-            <td class="weekend" />
-          {/if}
-        {/each}
-      </tr>
-    {/each}
   </table>
-  <Unscheduled />
 {/if}
