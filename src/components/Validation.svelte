@@ -2,7 +2,7 @@
   import { validation, fetchValidation } from "../store.js";
   let yes = false;
   let vali = [];
-  // fetchValidation();
+  fetchValidation();
   validation.subscribe(v => {
     vali = v;
   });

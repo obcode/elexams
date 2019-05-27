@@ -1,5 +1,5 @@
 {
-  "name": "Elexams",
+  "name": "elexams",
   "version": "0.0.1",
   "description": "A template for building Electron apps with Svelte",
   "main": "dist/main.js",
