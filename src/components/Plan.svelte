@@ -1,5 +1,6 @@
 <script>
   import Slot from "./Slot.svelte";
+  import ExamDetails from "./ExamDetails.svelte";
   import Unscheduled from "./Unscheduled.svelte";
   import { refetchExams, fetchValidation } from "../store.js";
 
@@ -106,6 +107,7 @@
     Alle Prüfungen eines Prüfers
   </label>
   <h1>Prüfungsplan {semesterConfig.semester}</h1>
+  <ExamDetails />
   <table>
     <tr>
       <th />

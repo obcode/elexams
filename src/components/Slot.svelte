@@ -4,7 +4,8 @@
     fetchValidation,
     refetchExams,
     conflictingAncodes,
-    conflictingSlots
+    conflictingSlots,
+    resetConflicting
   } from "../store.js";
   export let dayIndex;
   export let slotIndex;
@@ -39,6 +40,8 @@
       fetchExams();
     }
   });
+
+  resetConflicting.subscribe(_ => (conflicting = false));
 
   conflictingSlots.subscribe(slots => {
     maybeConflicting = false;

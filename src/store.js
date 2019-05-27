@@ -20,6 +20,8 @@ export const conflictingAncodes = writable(0);
 
 export const conflictingSlots = writable([]);
 
+export const resetConflicting = writable(0);
+
 export const setConflictingSlots = async ancode => {
   let response = await fetch("http://localhost:8080/conflictingSlots", {
     method: "POST",

@@ -5,7 +5,8 @@
     conflictingAncodes,
     clickedExamAnCode,
     conflictingSlots,
-    setConflictingSlots
+    setConflictingSlots,
+    resetConflicting
   } from "../store.js";
   import { get } from "svelte/store";
   import { createEventDispatcher } from "svelte";
@@ -13,6 +14,7 @@
   const dispatch = createEventDispatcher();
 
   const notPlannedByMe = !exam.plannedByMe;
+  const draggable = exam.plannedByMe;
   const reExam = exam.reExam;
   let dragged = false;
   let invisible = false;
@@ -23,19 +25,20 @@
   let clicked = false;
 
   function setConflicts() {
+    resetConflicting.update(x => x + 1);
     const c = get(conflictingAncodes);
-    if (clicked) {
-      conflictingAncodes.set(null);
-      conflictingSlots.set([]);
-      clickedExamAnCode.set(exam.anCode);
-      clicked = false;
-    } else {
-      conflictingAncodes.set(null);
-      setConflictingSlots(exam.anCode);
-      conflictingAncodes.set(exam.conflictingAncodes);
-      clicked = true;
-    }
+    setConflictingSlots(exam.anCode);
+    conflictingAncodes.set(exam.conflictingAncodes);
+    clickedExamAnCode.set(exam.anCode);
   }
+
+  clickedExamAnCode.subscribe(ac => {
+    if (ac === exam.anCode) {
+      clicked = true;
+    } else {
+      clicked = false;
+    }
+  });
 
   conflictingAncodes.subscribe(c => {
     clicked = false;
@@ -170,7 +173,7 @@
   class:reExam
   class:clicked
   class:conflicting
-  draggable="true"
+  {draggable}
   on:dragstart={dragStart}
   on:dragend={dragEnd}
   on:click={setConflicts}>
