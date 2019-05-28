@@ -1,4 +1,4 @@
-import { writable } from "svelte/store";
+import { writable, readable } from "svelte/store";
 
 export const validation = writable([]);
 
@@ -34,6 +34,24 @@ export const setConflictingSlots = async ancode => {
   conflictingSlots.set(resp);
 };
 
+export const examAnCode = writable(0);
+
 export const clickedExamAnCode = writable(0);
 
 export const showRegisteredGroups = writable(false);
+
+export const semesterConfig = readable(null, async set => {
+  const response = await fetch("http://localhost:8080/semesterConfig");
+  const sc = await response.json();
+  set(sc);
+  return () => {};
+});
+
+export const selectedLecturer = writable(0);
+
+export const lecturers = readable([], async set => {
+  const response = await fetch("http://localhost:8080/lecturer");
+  const lec = await response.json();
+  set(lec);
+  return () => {};
+});

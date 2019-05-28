@@ -7,7 +7,8 @@
     conflictingSlots,
     setConflictingSlots,
     resetConflicting,
-    showRegisteredGroups
+    showRegisteredGroups,
+    selectedLecturer
   } from "../store.js";
   import { get } from "svelte/store";
   import { createEventDispatcher } from "svelte";
@@ -24,6 +25,7 @@
   let conflicting = false;
   let studsWithConflicts = 0;
   let clicked = false;
+  let selected = false;
 
   function setConflicts() {
     resetConflicting.update(x => x + 1);
@@ -39,6 +41,10 @@
       clickedExamAnCode.set(exam.anCode);
     }
   }
+
+  selectedLecturer.subscribe(
+    lec => (selected = lec === exam.lecturer.personID)
+  );
 
   clickedExamAnCode.subscribe(ac => {
     if (ac === exam.anCode) {
@@ -100,6 +106,9 @@
   }
   .conflicting {
     background-color: crimson;
+  }
+  .selected {
+    background-color: rgb(190, 20, 220);
   }
   .conflictingStudents {
     font-weight: bold;
@@ -202,6 +211,7 @@
   class:reExam
   class:clicked
   class:conflicting
+  class:selected
   {draggable}
   on:dragstart={dragStart}
   on:dragend={dragEnd}

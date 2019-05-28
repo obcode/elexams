@@ -1,27 +1,30 @@
 <script>
   import Slot from "./Slot.svelte";
   import ExamDetails from "./ExamDetails.svelte";
+  import ShowExamsByLecturer from "./ShowExamsByLecturer.svelte";
   import Unscheduled from "./Unscheduled.svelte";
   import Validation from "./Validation.svelte";
   import {
     refetchExams,
     fetchValidation,
-    showRegisteredGroups
+    showRegisteredGroups,
+    examAnCode,
+    clickedExamAnCode,
+    semesterConfig
   } from "../store.js";
-
-  let semesterConfig;
-  const fetchSemesterConfig = async () => {
-    const response = await fetch("http://localhost:8080/semesterConfig");
-    semesterConfig = await response.json();
-  };
-  fetchSemesterConfig();
 
   function toggleShowRegisteredGroups() {
     showRegisteredGroups.update(b => !b);
   }
 
+  let ancode = 0;
+
+  function setAncode() {
+    clickedExamAnCode.set(ancode);
+  }
+
   function isGOSlot(dayIndex, slotIndex) {
-    for (const goSlot of semesterConfig.goSlots) {
+    for (const goSlot of $semesterConfig.goSlots) {
       if (goSlot[0] === dayIndex && goSlot[1] === slotIndex) return true;
     }
     return false;
@@ -110,11 +113,14 @@
   }
 </style>
 
-{#if semesterConfig === undefined}
+{#if $semesterConfig === undefined || $semesterConfig === null}
   Loading...
 {:else}
-  <h1>Prüfungsplan {semesterConfig.semester}</h1>
+  <h1>Prüfungsplan {$semesterConfig.semester}</h1>
   <button on:click={reloadPlan}>Reload Plan from Server</button>
+  Zeige Prüfung mit AnCode:
+  <input type="number" bind:value={ancode} on:change={setAncode} />
+  <ShowExamsByLecturer />
   <label>
     <input type="checkbox" on:click={toggleShowRegisteredGroups} />
     Show Registered Groups
@@ -125,7 +131,7 @@
         <table class="planTable">
           <tr class="planTable">
             <th />
-            {#each semesterConfig.examDays as examDay, index}
+            {#each $semesterConfig.examDays as examDay, index}
               <th class="planTable days">
                  {dateString(examDay)}
                 <br />
@@ -136,14 +142,14 @@
               {/if}
             {/each}
           </tr>
-          {#each semesterConfig.slotsPerDay as slot, slotIndex}
+          {#each $semesterConfig.slotsPerDay as slot, slotIndex}
             <tr>
               <td class="planTable times">
                  {slot}
                 <br />
                 ({slotIndex})
               </td>
-              {#each semesterConfig.examDays as examDay, dayIndex}
+              {#each $semesterConfig.examDays as examDay, dayIndex}
                 <td class="planTable exams">
                   <div id="slot_{dayIndex}_{slotIndex}" class="slot">
                     <Slot

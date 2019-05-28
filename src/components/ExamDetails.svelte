@@ -38,4 +38,11 @@
     {#if index > 0},{/if}
      {registeredGroup.registeredGroupDegree} ({registeredGroup.registeredGroupStudents})
   {/each}
+  {#if Object.keys(exam.conflictingAncodes).length > 0}
+    <br />
+    <span>
+      Konflikte zu {Object.keys(exam.conflictingAncodes).length} anderen
+      Prüfungen
+    </span>
+  {/if}
 {/if}
