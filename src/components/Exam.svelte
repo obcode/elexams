@@ -11,9 +11,6 @@
     selectedLecturer
   } from "../store.js";
   import { get } from "svelte/store";
-  import { createEventDispatcher } from "svelte";
-
-  const dispatch = createEventDispatcher();
 
   const notPlannedByMe = !exam.plannedByMe;
   const draggable = exam.plannedByMe;
@@ -62,7 +59,6 @@
         if (parseInt(conflictingAncode) === exam.anCode) {
           conflicting = true;
           studsWithConflicts = conflicts[conflictingAncode];
-          dispatch("conflictingExam", null);
           return;
         }
       }

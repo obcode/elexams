@@ -34,7 +34,7 @@ export const setConflictingSlots = async ancode => {
   conflictingSlots.set(resp);
 };
 
-export const examAnCode = writable(0);
+export const selectedExamAnCode = writable(0);
 
 export const clickedExamAnCode = writable(0);
 

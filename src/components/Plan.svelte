@@ -8,7 +8,7 @@
     refetchExams,
     fetchValidation,
     showRegisteredGroups,
-    examAnCode,
+    selectedExamAnCode,
     clickedExamAnCode,
     semesterConfig
   } from "../store.js";

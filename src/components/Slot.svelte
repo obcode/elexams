@@ -5,7 +5,9 @@
     refetchExams,
     conflictingAncodes,
     conflictingSlots,
-    resetConflicting
+    resetConflicting,
+    clickedExamAnCode,
+    setConflictingSlots
   } from "../store.js";
   export let dayIndex;
   export let slotIndex;
@@ -41,25 +43,32 @@
     }
   });
 
-  resetConflicting.subscribe(_ => (conflicting = false));
-
-  conflictingSlots.subscribe(slots => {
+  resetConflicting.subscribe(_ => {
+    conflicting = false;
     maybeConflicting = false;
     notConflicting = false;
-    if (slots.length !== 0) {
+  });
+
+  conflictingSlots.subscribe(allSlots => {
+    conflicting = false;
+    maybeConflicting = false;
+    notConflicting = false;
+    if (allSlots.length !== 0) {
       notConflicting = true;
-    }
-    for (const slot of slots) {
-      if (slot[0] === dayIndex && slot[1] === slotIndex) {
-        maybeConflicting = true;
-        return;
+      for (const slot of allSlots[0]) {
+        if (slot[0] === dayIndex && slot[1] === slotIndex) {
+          conflicting = true;
+          return;
+        }
+      }
+      for (const slot of allSlots[1]) {
+        if (slot[0] === dayIndex && slot[1] === slotIndex) {
+          maybeConflicting = true;
+          return;
+        }
       }
     }
   });
-
-  function setConflicting(event) {
-    conflicting = true;
-  }
 
   conflictingAncodes.subscribe(conflicts => {
     if (
@@ -104,6 +113,9 @@
       refetchExams.set([exam.slot[0], exam.slot[1]]);
       fetchExams();
       fetchValidation();
+      // TODO: update von conflicts bei drag und drop funktioniert nicht richtig
+      setConflictingSlots($clickedExamAnCode);
+      conflictingAncodes.update(as => as);
     });
   }
 </script>
@@ -152,7 +164,7 @@
   <div class="exams" class:draggedOver class:goSlot class:conflicting>
     {#if exams.length !== 0}
       {#each exams as exam}
-        <Exam {exam} on:conflictingExam={setConflicting} />
+        <Exam {exam} />
       {/each}
     {/if}
   </div>
