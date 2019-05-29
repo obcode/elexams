@@ -41,7 +41,9 @@ export const clickedExamAnCode = writable(0);
 export const showRegisteredGroups = writable(false);
 
 export const semesterConfig = readable(null, async set => {
-  const response = await fetch("http://localhost:8080/semesterConfig");
+  const response = await fetch("http://localhost:8080/semesterConfig").catch(
+    error => alert("Fehler: vermutlich läuft plexams-server nicht!")
+  );
   const sc = await response.json();
   set(sc);
   return () => {};

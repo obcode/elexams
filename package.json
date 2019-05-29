@@ -1,23 +1,18 @@
 {
   "name": "elexams",
   "version": "0.0.1",
-  "description": "A template for building Electron apps with Svelte",
+  "description": "A frontend for obcode/plexams server",
   "main": "dist/main.js",
+  "private": true,
   "scripts": {
     "start": "cross-env NODE_ENV=development electron .",
     "dev": "rollup -cw",
     "build": "rollup -c",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps",
+    "release": "build --publish=never"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
-  "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
-  ],
-  "author": "GitHub",
+  "repository": "https://github.com/obcode/elexams",
+  "author": "Oliver Braun",
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^5.0.2",
