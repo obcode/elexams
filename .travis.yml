@@ -2,6 +2,8 @@ sudo: false
 
 # Define Node.js as the programming language as we have a web application
 language: node_js
+node_js:
+  - node
 
 os:
   - linux
