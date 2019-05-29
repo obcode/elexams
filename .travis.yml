@@ -25,7 +25,7 @@ before_cache:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then rm -rf $HOME/.cache/electron-builder/wine; fi
 
 install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install yarn; fi
+  #  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install yarn; fi
   - yarn
 
   - echo "Deploy linux version to GitHub"
@@ -36,3 +36,6 @@ install:
 
   - echo "Deploy mac version to GitHub"
   - if [[ "$TRAVIS_BRANCH" == "master" ]] && [[ "$TRAVIS_OS_NAME" == "osx" ]]; then yarn release:mac; fi
+
+test:
+  - true
