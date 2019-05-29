@@ -1,12 +1,34 @@
 <script>
   import Slot from "./Slot.svelte";
+  import ExamDetails from "./ExamDetails.svelte";
+  import ShowExamsByLecturer from "./ShowExamsByLecturer.svelte";
+  import Unscheduled from "./Unscheduled.svelte";
+  import Validation from "./Validation.svelte";
+  import {
+    refetchExams,
+    fetchValidation,
+    showRegisteredGroups,
+    selectedExamAnCode,
+    clickedExamAnCode,
+    semesterConfig
+  } from "../store.js";
 
-  let semesterConfig;
-  const fetchSemesterConfig = async () => {
-    const response = await fetch("http://localhost:8080/semesterConfig");
-    semesterConfig = await response.json();
-  };
-  fetchSemesterConfig();
+  function toggleShowRegisteredGroups() {
+    showRegisteredGroups.update(b => !b);
+  }
+
+  let ancode = 0;
+
+  function setAncode() {
+    clickedExamAnCode.set(ancode);
+  }
+
+  function isGOSlot(dayIndex, slotIndex) {
+    for (const goSlot of $semesterConfig.goSlots) {
+      if (goSlot[0] === dayIndex && goSlot[1] === slotIndex) return true;
+    }
+    return false;
+  }
 
   function dateString(date) {
     const d = new Date(date);
@@ -24,45 +46,44 @@
     return d.getDay() === 5;
   }
 
-  // Drag and Drop
-
-  function allowDropExam(ev) {
-    // if (
-    //   ev.currentTarget.classList.contains("slot") ||
-    //   ev.currentTarget.className === "unscheduled"
-    // ) {
-    //   ev.preventDefault();
-    // }
-  }
-
-  function dropExam(ev) {
-    // var data = parseInt(ev.dataTransfer.getData("text"));
-    // var day = parseInt(ev.currentTarget.getAttribute("data-day"));
-    // var slot = parseInt(ev.currentTarget.getAttribute("data-slot"));
-    // let dropped = addExamToSlot(data, day, slot);
-    // if (dropped) {
-    //   ev.currentTarget.appendChild(document.getElementById(data));
-    //   if (ev.currentTarget.className === "outer") {
-    //     document.getElementById(data).className = "inner";
-    //   } else if (ev.currentTarget.className === "outerUnscheduled") {
-    //     document.getElementById(data).className = "innerUnscheduled";
-    //   }
-    //   _fetchValidation();
-    // }
+  async function reloadPlan() {
+    const reloadResult = await fetch("http://localhost:8080/reloadPlan");
+    const jsonResult = await reloadResult.json();
+    if (jsonResult) {
+      refetchExams.set([]);
+      fetchValidation();
+      if (jsonResult[0]) {
+        let output = "Erfolgreich!!\n";
+        for (const info of jsonResult[1]) {
+          output += `\n${info}`;
+        }
+        alert(output);
+      } else {
+        alert(JSON.stringify(jsonResult));
+      }
+    } else {
+      alert(`Cannot reload Plan\n ${JSON.stringify(jsonResult)}`);
+    }
   }
 </script>
 
 <style>
-  td,
-  table,
-  th {
+  hr {
+    border: 1px solid red;
+  }
+  .planTable {
     border-collapse: collapse;
     user-select: none;
     border: 1px solid black;
     vertical-align: top;
+    font-size: 12px;
+  }
+  .validation {
+    vertical-align: top;
+    font-size: 12px;
   }
   .exams {
-    height: 60px;
+    height: 30px;
   }
   .times {
     width: 40px;
@@ -78,55 +99,79 @@
     min-width: 30px;
   }
   .slot {
-    padding: 5px;
-    padding-top: 15px;
+    /* padding: 5px;
+    padding-top: 15px; */
     height: 100%;
     max-width: 200px;
   }
+  button {
+    border-radius: 12px;
+    border: 5px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2),
+      0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color: rgb(100, 237, 237);
+  }
 </style>
 
-{#if semesterConfig === undefined}
+{#if $semesterConfig === undefined || $semesterConfig === null}
   Loading...
 {:else}
-  <h1>Prüfungsplan {semesterConfig.semester}</h1>
+  <h1>Prüfungsplan {$semesterConfig.semester}</h1>
+  <button on:click={reloadPlan}>Reload Plan from Server</button>
+  Zeige Prüfung mit AnCode:
+  <input type="number" bind:value={ancode} on:change={setAncode} />
+  <ShowExamsByLecturer />
+  <label>
+    <input type="checkbox" on:click={toggleShowRegisteredGroups} />
+    Show Registered Groups
+  </label>
   <table>
     <tr>
-      <th />
-      {#each semesterConfig.examDays as examDay, index}
-        <th class="days">
-           {dateString(examDay)}
-          <br />
-          ({index})
-        </th>
-        {#if weekend(examDay)}
-          <th class="weekend" />
-        {/if}
-      {/each}
+      <td>
+        <table class="planTable">
+          <tr class="planTable">
+            <th />
+            {#each $semesterConfig.examDays as examDay, index}
+              <th class="planTable days">
+                 {dateString(examDay)}
+                <br />
+                ({index})
+              </th>
+              {#if weekend(examDay)}
+                <th class="planTable weekend" />
+              {/if}
+            {/each}
+          </tr>
+          {#each $semesterConfig.slotsPerDay as slot, slotIndex}
+            <tr>
+              <td class="planTable times">
+                 {slot}
+                <br />
+                ({slotIndex})
+              </td>
+              {#each $semesterConfig.examDays as examDay, dayIndex}
+                <td class="planTable exams">
+                  <div id="slot_{dayIndex}_{slotIndex}" class="slot">
+                    <Slot
+                      {dayIndex}
+                      {slotIndex}
+                      goSlot={isGOSlot(dayIndex, slotIndex)} />
+                  </div>
+                </td>
+                {#if weekend(examDay)}
+                  <td class="planTable weekend" />
+                {/if}
+              {/each}
+            </tr>
+          {/each}
+        </table>
+        <Unscheduled />
+      </td>
+      <td class="validation">
+        <ExamDetails />
+        <hr />
+        <Validation />
+      </td>
     </tr>
-    {#each semesterConfig.slotsPerDay as slot, slotIndex}
-      <tr>
-        <td class="times">
-           {slot}
-          <br />
-          ({slotIndex})
-        </td>
-        {#each semesterConfig.examDays as examDay, dayIndex}
-          <td class="exams">
-            <div
-              id="slot_{dayIndex}_{slotIndex}"
-              class="slot"
-              data-day={dayIndex}
-              data-slot={slotIndex}
-              ondrop="dropExam(event)"
-              ondragover="allowDropExam(event)">
-              <Slot {dayIndex} {slotIndex} />
-            </div>
-          </td>
-          {#if weekend(examDay)}
-            <td class="weekend" />
-          {/if}
-        {/each}
-      </tr>
-    {/each}
   </table>
 {/if}
