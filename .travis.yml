@@ -27,7 +27,7 @@ before_cache:
 install:
   #  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install yarn; fi
   - yarn
-
+  - yarn build
   - echo "Deploy linux version to GitHub"
   - if  [[ "$TRAVIS_OS_NAME" == "linux" ]]; then yarn release:linux; fi
 
