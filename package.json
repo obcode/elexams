@@ -10,7 +10,11 @@
     "build": "rollup -c",
     "postinstall": "electron-builder install-app-deps",
     "test": "true",
-    "release": "build --publish=never"
+    "release": "build --publish=never",
+    "release:all": "build -mwl -p always",
+    "release:win": "build --win -p always",
+    "release:mac": "build --mac -p always",
+    "release:linux": "build --linux -p always"
   },
   "repository": "https://github.com/obcode/elexams",
   "author": "Oliver Braun",
