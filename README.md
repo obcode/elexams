@@ -1,18 +1,9 @@
-# svelte-template-electron
+# Elexams
 
-A simple boilerplate for building Electron apps with Svelte.
+Planing exams with [Electron](https://electronjs.org/) and [Plexams](https://github.com/obcode/plexams).
 
+You can download the latest release for Linux, Mac or Windows from <https://github.com/obcode/elexams/releases/>.
 
 ## Developing
 
-Clone the repo, and install dependencies with `npm install`. Then `npm run dev` to build the app and `npm start` to open it.
-
-
-## Building
-
-`npm run build` creates a production version of the app, which can then be run with `npm start`. Instructions on creating a standalone executable to follow.
-
-
-## License
-
-[LIL](LICENSE)
+Clone the repo, and install dependencies with `yarn`. Then `yarn dev` to build the app and `yarn start` to open it.
