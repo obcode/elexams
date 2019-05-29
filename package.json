@@ -9,6 +9,7 @@
     "dev": "rollup -cw",
     "build": "rollup -c",
     "postinstall": "electron-builder install-app-deps",
+    "test": "true",
     "release": "build --publish=never"
   },
   "repository": "https://github.com/obcode/elexams",

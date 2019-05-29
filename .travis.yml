@@ -28,6 +28,10 @@ install:
   #  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install yarn; fi
   - yarn
 
+  - yarn release:linux
+  - yarn release:win
+  - yarn release:mac
+
   - echo "Deploy linux version to GitHub"
   - if [[ "$TRAVIS_BRANCH" == "master" ]] && [[ "$TRAVIS_OS_NAME" == "linux" ]]; then yarn release:linux; fi
 
@@ -36,6 +40,3 @@ install:
 
   - echo "Deploy mac version to GitHub"
   - if [[ "$TRAVIS_BRANCH" == "master" ]] && [[ "$TRAVIS_OS_NAME" == "osx" ]]; then yarn release:mac; fi
-
-test:
-  - true
