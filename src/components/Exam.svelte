@@ -4,12 +4,13 @@
   import {
     conflictingAncodes,
     clickedExamAnCode,
+    examsInSameSlot,
     conflictingSlots,
     setConflictingSlots,
     resetConflicting,
     showRegisteredGroups
   } from "../stores/exams.js";
-  import {selectedLecturer} from "../stores/lecturers.js"
+  import { selectedLecturer } from "../stores/lecturers.js";
   import { get } from "svelte/store";
 
   const notPlannedByMe = !exam.plannedByMe;
@@ -31,11 +32,13 @@
       conflictingSlots.set([]);
       conflictingAncodes.set([]);
       clickedExamAnCode.set(0);
+      examsInSameSlot.set([]);
     } else {
       const c = get(conflictingAncodes);
       setConflictingSlots(exam.anCode);
       conflictingAncodes.set(exam.conflictingAncodes);
       clickedExamAnCode.set(exam.anCode);
+      examsInSameSlot.set(exam.sameSlot);
     }
   }
 
@@ -65,6 +68,18 @@
     }
     conflicting = false;
     studsWithConflicts = 0;
+  });
+
+  let sameSlot = false;
+
+  examsInSameSlot.subscribe(ancodes => {
+    sameSlot = false;
+    for (const ac of ancodes) {
+      if (exam.anCode === ac) {
+        sameSlot = true;
+        return;
+      }
+    }
   });
 
   let registeredGroup = false;
@@ -100,11 +115,20 @@
   .reExam {
     background-color: rgb(32, 206, 206);
   }
+  .notPlannedByMe {
+    background-color: slategrey;
+  }
   .conflicting {
     background-color: crimson;
   }
   .selected {
     background-color: rgb(190, 20, 220);
+  }
+  .sameSlot {
+    background-color: rgb(246, 203, 101);
+  }
+  .clicked {
+    background-color: rgb(211, 147, 0);
   }
   .conflictingStudents {
     font-weight: bold;
@@ -116,9 +140,6 @@
   }
   .invisible {
     display: none;
-  }
-  .clicked {
-    background-color: rgb(255, 181, 8);
   }
 
   .name {
@@ -162,9 +183,6 @@
     width: 120px;
     padding: 0;
   }
-  .notPlannedByMe {
-    background-color: slategrey;
-  }
   .anCode {
     background-color: rgb(226, 69, 12);
     padding: 2px 2px 2px 2px;
@@ -207,6 +225,7 @@
   class:reExam
   class:clicked
   class:conflicting
+  class:sameSlot
   class:selected
   {draggable}
   on:dragstart={dragStart}

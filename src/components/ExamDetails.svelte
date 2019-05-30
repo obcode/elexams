@@ -40,6 +40,14 @@
   {/each}
   {#if Object.keys(exam.conflictingAncodes).length > 0}
     <br />
+    {#if exam.sameSlot.length > 0}
+      Im gleichen Slot müssen stattfinden:
+      {#each exam.sameSlot as ancode, index}
+        {#if index > 0},{/if}
+         {ancode}
+      {/each}
+      <br />
+    {/if}
     <span>
       Konflikte zu {Object.keys(exam.conflictingAncodes).length} anderen
       Prüfungen
