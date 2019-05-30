@@ -1,5 +1,5 @@
 <script>
-  import { selectedLecturer, lecturers } from "../store.js";
+  import { selectedLecturer, lecturers } from "../stores/lecturers.js";
   let selected = 0;
   function setSelected() {
     selectedLecturer.set(selected);

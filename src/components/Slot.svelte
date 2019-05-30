@@ -1,14 +1,16 @@
 <script>
   import Exam from "./Exam.svelte";
   import {
-    fetchValidation,
+    fetchValidation
+  } from "../stores/main.js";
+    import {
     refetchExams,
     conflictingAncodes,
     conflictingSlots,
     resetConflicting,
     clickedExamAnCode,
     setConflictingSlots
-  } from "../store.js";
+  } from "../stores/exams.js";
   export let dayIndex;
   export let slotIndex;
   export let goSlot = false;

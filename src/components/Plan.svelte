@@ -5,14 +5,15 @@
   import Unscheduled from "./Unscheduled.svelte";
   import Validation from "./Validation.svelte";
   import {
-    refetchExams,
     fetchValidation,
+    semesterConfig
+  } from "../stores/main.js";
+  import {
+    refetchExams,
     showRegisteredGroups,
     selectedExamAnCode,
-    clickedExamAnCode,
-    semesterConfig
-  } from "../store.js";
-
+    clickedExamAnCode
+  } from "../stores/exams.js";
   function toggleShowRegisteredGroups() {
     showRegisteredGroups.update(b => !b);
   }
@@ -116,7 +117,6 @@
 {#if $semesterConfig === undefined || $semesterConfig === null}
   Loading...
 {:else}
-  <h1>Prüfungsplan {$semesterConfig.semester}</h1>
   <button on:click={reloadPlan}>Reload Plan from Server</button>
   Zeige Prüfung mit AnCode:
   <input type="number" bind:value={ancode} on:change={setAncode} />

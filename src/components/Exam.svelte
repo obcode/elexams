@@ -7,9 +7,9 @@
     conflictingSlots,
     setConflictingSlots,
     resetConflicting,
-    showRegisteredGroups,
-    selectedLecturer
-  } from "../store.js";
+    showRegisteredGroups
+  } from "../stores/exams.js";
+  import {selectedLecturer} from "../stores/lecturers.js"
   import { get } from "svelte/store";
 
   const notPlannedByMe = !exam.plannedByMe;
