@@ -1,5 +1,5 @@
 <script>
-  import { validation, fetchValidation } from "../store.js";
+  import { validation, fetchValidation } from "../stores/main.js";
   let yes = false;
   let vali = [];
   fetchValidation();
