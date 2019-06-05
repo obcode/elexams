@@ -1,16 +1,15 @@
 <script>
   import { semesterConfig } from "../stores/main.js";
-  import {  lecturers } from "../stores/lecturers.js";
+  import { lecturers } from "../stores/lecturers.js";
   import Plan from "./Plan.svelte";
+  import Rooms from "./Rooms.svelte";
   import NTA from "./NTA.svelte";
-  let info = 1;
+  let info = 2;
   let l = $lecturers; // FIXME: Problem ist Promise in readable
 </script>
 
 <style>
-  td {
-    vertical-align: 0pt;
-  }
+
 </style>
 
 <main>
@@ -39,6 +38,9 @@
     </div>
     {#if info === 1}
       <Plan />
+    {/if}
+    {#if info === 2}
+      <Rooms />
     {/if}
     {#if info === 4}
       <NTA />

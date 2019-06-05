@@ -4,16 +4,15 @@
   import ShowExamsByLecturer from "./ShowExamsByLecturer.svelte";
   import Unscheduled from "./Unscheduled.svelte";
   import Validation from "./Validation.svelte";
-  import {
-    fetchValidation,
-    semesterConfig
-  } from "../stores/main.js";
+  import { fetchValidation, semesterConfig } from "../stores/main.js";
   import {
     refetchExams,
     showRegisteredGroups,
     selectedExamAnCode,
     clickedExamAnCode
   } from "../stores/exams.js";
+  import { dateString, weekend } from "../misc.js";
+
   function toggleShowRegisteredGroups() {
     showRegisteredGroups.update(b => !b);
   }
@@ -29,22 +28,6 @@
       if (goSlot[0] === dayIndex && goSlot[1] === slotIndex) return true;
     }
     return false;
-  }
-
-  function dateString(date) {
-    const d = new Date(date);
-    const options = {
-      weekday: "short",
-      year: "2-digit",
-      month: "2-digit",
-      day: "2-digit"
-    };
-    return d.toLocaleString("de-DE", options);
-  }
-
-  function weekend(date) {
-    const d = new Date(date);
-    return d.getDay() === 5;
   }
 
   async function reloadPlan() {
