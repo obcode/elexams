@@ -1,6 +1,6 @@
 <script>
   import { plannedRooms, selectedRoom } from "../stores/rooms.js";
-  let selected = "";
+  let selected = $selectedRoom;
   function setSelected() {
     selectedRoom.set(selected);
   }
