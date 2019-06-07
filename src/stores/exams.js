@@ -27,3 +27,5 @@ export const clickedExamAnCode = writable(0);
 export const examsInSameSlot = writable([]);
 
 export const showRegisteredGroups = writable(false);
+
+export const showRooms = writable(false);

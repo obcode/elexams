@@ -8,6 +8,7 @@
   import {
     refetchExams,
     showRegisteredGroups,
+    showRooms,
     selectedExamAnCode,
     clickedExamAnCode
   } from "../stores/exams.js";
@@ -15,6 +16,10 @@
 
   function toggleShowRegisteredGroups() {
     showRegisteredGroups.update(b => !b);
+  }
+
+  function toggleShowRooms() {
+    showRooms.update(b => !b);
   }
 
   let ancode = 0;
@@ -35,7 +40,7 @@
     const jsonResult = await reloadResult.json();
     if (jsonResult) {
       refetchExams.set([]);
-      fetchValidation();
+      fetchValidation("ValidateSchedule");
       if (jsonResult[0]) {
         let output = "Erfolgreich!!\n";
         for (const info of jsonResult[1]) {
@@ -100,13 +105,21 @@
 {#if $semesterConfig === undefined || $semesterConfig === null}
   Loading...
 {:else}
+  <h1>
+    Prüfungsplanung
+    {#if $semesterConfig.scheduleFrozen}(keine Änderungen mehr möglich){/if}
+  </h1>
   <button on:click={reloadPlan}>Reload Plan from Server</button>
   Zeige Prüfung mit AnCode:
   <input type="number" bind:value={ancode} on:change={setAncode} />
   <ShowExamsByLecturer />
   <label>
     <input type="checkbox" on:click={toggleShowRegisteredGroups} />
-    Show Registered Groups
+    zeige Anmeldungen
+  </label>
+  <label>
+    <input type="checkbox" on:click={toggleShowRooms} />
+    zeige Räume
   </label>
   <table>
     <tr>
@@ -153,7 +166,7 @@
       <td class="validation">
         <ExamDetails />
         <hr />
-        <Validation />
+        <Validation validateWhat="ValidateSchedule"/>
       </td>
     </tr>
   </table>

@@ -1,9 +1,11 @@
 <script>
+  export let dayIndex;
+  export let slotIndex;
+  export let goSlot = false;
+
   import Exam from "./Exam.svelte";
+  import { fetchValidation } from "../stores/main.js";
   import {
-    fetchValidation
-  } from "../stores/main.js";
-    import {
     refetchExams,
     conflictingAncodes,
     conflictingSlots,
@@ -11,9 +13,6 @@
     clickedExamAnCode,
     setConflictingSlots
   } from "../stores/exams.js";
-  export let dayIndex;
-  export let slotIndex;
-  export let goSlot = false;
 
   let exams = [];
   let studentCount = 0;
@@ -39,7 +38,6 @@
 
   refetchExams.subscribe(v => {
     if (v.length === 0 || (v[0] === dayIndex && v[1] === slotIndex)) {
-      console.log(`fetching exams for slot (${dayIndex}, ${slotIndex})`);
       exams = [];
       fetchExams();
     }
