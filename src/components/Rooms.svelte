@@ -1,8 +1,9 @@
 <script>
   import { semesterConfig } from "../stores/main.js";
   import { dateString, weekend } from "../misc.js";
-  import RoomSlot from "./RoomSlot.svelte"
-  import Validation from "./Validation.svelte"
+  import RoomSlot from "./RoomSlot.svelte";
+  import ShowOnlyRoom from "./ShowOnlyRoom.svelte";
+  import Validation from "./Validation.svelte";
 </script>
 
 <style>
@@ -32,8 +33,7 @@
     min-width: 30px;
   }
   .validation {
-        vertical-align: top;
-
+    vertical-align: top;
   }
 </style>
 
@@ -42,6 +42,7 @@
 {:else}
   <div class="center">
     <h1>Raumplanung</h1>
+    <ShowOnlyRoom />
     <table>
       <tr>
         <td>
@@ -69,10 +70,7 @@
                 {#each $semesterConfig.examDays as examDay, dayIndex}
                   <td class="roomTable exams">
                     <div id="slot_{dayIndex}_{slotIndex}" class="slot">
-                      <RoomSlot
-                      {dayIndex}
-                      {slotIndex}
-                       />
+                      <RoomSlot {dayIndex} {slotIndex} />
                     </div>
                   </td>
                   {#if weekend(examDay)}
@@ -84,8 +82,8 @@
           </table>
         </td>
         <td class="validation">
-        <Validation  validateWhat="ValidateRooms"/>
-      </td>
+          <Validation validateWhat="ValidateRooms" />
+        </td>
       </tr>
     </table>
   </div>

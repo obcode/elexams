@@ -1,5 +1,6 @@
 <script>
   export let roomWithExams;
+  import { selectedRoom } from "../stores/rooms.js";
   import RoomWithExam from "./RoomWithExam.svelte";
   const roomID = roomWithExams[0][0].roomID;
 
@@ -32,6 +33,11 @@
     }
     return r;
   }
+  let showMe = true;
+  selectedRoom.subscribe(selRoom => {
+    showMe = selRoom === "alle" || selRoom === roomID
+  }
+  )
 </script>
 
 <style>
@@ -68,39 +74,41 @@
   }
 </style>
 
-{#if roomWithExams !== undefined && roomWithExams !== null && roomWithExams.length > 0}
-  <div class="room {roomWithExams[0][0].roomID}">
-    <span class="roomID" on:click={() => (showModal = true)}> {roomID} </span>
-    <span class="studentCount" class:problem class:full>
-       {studentsInRoom} / {roomWithExams[0][0].maxSeats}
-    </span>
-    {#each roomWithExams as roomWithExam}
-      <RoomWithExam {roomWithExam} />
-    {/each}
-  </div>
+{#if showMe}
+  {#if roomWithExams !== undefined && roomWithExams !== null && roomWithExams.length > 0}
+    <div class="room {roomWithExams[0][0].roomID}">
+      <span class="roomID" on:click={() => (showModal = true)}> {roomID} </span>
+      <span class="studentCount" class:problem class:full>
+         {studentsInRoom} / {roomWithExams[0][0].maxSeats}
+      </span>
+      {#each roomWithExams as roomWithExam}
+        <RoomWithExam {roomWithExam} />
+      {/each}
+    </div>
 
-  {#if showModal && setPlannedRoom()}
-    <Modal on:close={() => (showModal = false)}>
-      <h2 slot="header"> {roomID} </h2>
+    {#if showModal && setPlannedRoom()}
+      <Modal on:close={() => (showModal = false)}>
+        <h2 slot="header"> {roomID} </h2>
 
-      <ul>
-        {#each plannedRoom.plannedRoomDaysAndSlots as dayAndSlots}
-          <li>
-             {dayAndSlots.plannedRoomDay}
-            <ul>
-              {#each dayAndSlots.plannedRoomSlots as slot}
-                <li>{slot[1]}</li>
-              {/each}
-            </ul>
-          </li>
-        {/each}
-      </ul>
+        <ul>
+          {#each plannedRoom.plannedRoomDaysAndSlots as dayAndSlots}
+            <li>
+               {dayAndSlots.plannedRoomDay}
+              <ul>
+                {#each dayAndSlots.plannedRoomSlots as slot}
+                  <li>{slot[1]}</li>
+                {/each}
+              </ul>
+            </li>
+          {/each}
+        </ul>
 
-      <hr />
-      <h2>für das yaml</h2>
-      <hr />
-      <pre> {roomOnlyForSlots()} </pre>
+        <hr />
+        <h2>für das yaml</h2>
+        <hr />
+        <pre> {roomOnlyForSlots()} </pre>
 
-    </Modal>
+      </Modal>
+    {/if}
   {/if}
 {/if}

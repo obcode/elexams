@@ -1,7 +1,7 @@
 <script>
   export let roomWithExam;
-  import Modal from "./Modal.svelte"
-  let showModal = false
+  import Modal from "./Modal.svelte";
+  let showModal = false;
   const room = roomWithExam[0];
   const reserveRoom = room.reserveRoom;
   const handicapCompensation = room.handicapCompensation;
@@ -58,9 +58,13 @@
   }
 </style>
 
-<div class="roomWithExam" class:reserveRoom class:handicapCompensation on:click={() => (showModal = true)}>
+<div
+  class="roomWithExam"
+  class:reserveRoom
+  class:handicapCompensation
+  on:click={() => (showModal = true)}>
   <span>
-    {room.studentsInRoom.length} Stud - {exam.duration + room.deltaDuration}
+     {room.studentsInRoom.length} Stud - {exam.duration + room.deltaDuration}
     Minuten
   </span>
   <span class="room" data-text="{exam.lecturer.personShortName} {exam.name}">
@@ -68,17 +72,19 @@
   </span>
 </div>
 
-  {#if showModal}
-    <Modal on:close={() => (showModal = false)}>
-      <h2 slot="header"> {exam.name}, {exam.lecturer.personShortName} </h2>
+{#if showModal}
+  <Modal on:close={() => (showModal = false)}>
+    <h2 slot="header"> {exam.name}, {exam.lecturer.personShortName} </h2>
 
-      <ol>
-        {#each room.studentsInRoom as student}
-          <li>
-             {student.studentFamilyname}, {student.studentFirstname} ({student.studentGroup})
-             {#if student.studentHandicap !== null && student.studentHandicap !== undefined}: {student.studentHandicap.handicapCompensationText} {/if}
-          </li>
-        {/each}
-      </ol>
-    </Modal>
-  {/if}
+    <ol>
+      {#each room.studentsInRoom as student}
+        <li>
+           {student.studentFamilyname}, {student.studentFirstname} ({student.studentGroup})
+          {#if student.studentHandicap !== null && student.studentHandicap !== undefined}
+            : {student.studentHandicap.handicapCompensationText}
+          {/if}
+        </li>
+      {/each}
+    </ol>
+  </Modal>
+{/if}
