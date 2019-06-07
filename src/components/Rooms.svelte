@@ -1,9 +1,14 @@
 <script>
   import { semesterConfig } from "../stores/main.js";
   import { dateString, weekend } from "../misc.js";
+  import { showExams } from "../stores/rooms.js";
   import RoomSlot from "./RoomSlot.svelte";
   import ShowOnlyRoom from "./ShowOnlyRoom.svelte";
   import Validation from "./Validation.svelte";
+
+  function toggleShowExams() {
+    showExams.update(b => !b);
+  }
 </script>
 
 <style>
@@ -43,6 +48,10 @@
   <div class="center">
     <h1>Raumplanung</h1>
     <ShowOnlyRoom />
+    <label>
+      <input type="checkbox" on:click={toggleShowExams} checked />
+      zeige Prüfungen
+    </label>
     <table>
       <tr>
         <td>

@@ -1,6 +1,6 @@
 <script>
   export let roomWithExams;
-  import { selectedRoom } from "../stores/rooms.js";
+  import { selectedRoom, showExams } from "../stores/rooms.js";
   import RoomWithExam from "./RoomWithExam.svelte";
   const roomID = roomWithExams[0][0].roomID;
 
@@ -35,9 +35,8 @@
   }
   let showMe = true;
   selectedRoom.subscribe(selRoom => {
-    showMe = selRoom === "alle" || selRoom === roomID
-  }
-  )
+    showMe = selRoom === "alle" || selRoom === roomID;
+  });
 </script>
 
 <style>
@@ -56,9 +55,6 @@
   .studentCount {
     float: right;
     padding: 1px;
-    border-left: 2px rgb(226, 69, 12) solid;
-    border-bottom: 2px rgb(226, 69, 12) solid;
-    border-radius: 1px;
   }
   .R1\.046 {
     background-color: red;
@@ -81,9 +77,11 @@
       <span class="studentCount" class:problem class:full>
          {studentsInRoom} / {roomWithExams[0][0].maxSeats}
       </span>
-      {#each roomWithExams as roomWithExam}
-        <RoomWithExam {roomWithExam} />
-      {/each}
+      {#if $showExams}
+        {#each roomWithExams as roomWithExam}
+          <RoomWithExam {roomWithExam} />
+        {/each}
+      {/if}
     </div>
 
     {#if showModal && setPlannedRoom()}
