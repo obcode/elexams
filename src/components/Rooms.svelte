@@ -14,7 +14,7 @@
 <style>
   .center {
     margin: auto;
-    width: 90%;
+    width: 100%;
     padding: 10px;
   }
   .roomTable {
@@ -39,6 +39,7 @@
   }
   .validation {
     vertical-align: top;
+    width: 20%;
   }
 </style>
 
