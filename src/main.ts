@@ -1,6 +1,6 @@
 import * as path from "path";
 import * as url from "url";
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, Menu } from "electron";
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -33,6 +33,104 @@ function launch() {
       scrollBounce: true
     }
   });
+
+  const shell = require("electron").shell;
+
+  const menu = Menu.buildFromTemplate([
+    {
+      label: "Menu",
+      submenu: [
+        {
+          label: "ZPA",
+          click() {
+            shell.openExternal(
+              "https://w3-o.cs.hm.edu:8000/regulations/imexport/"
+            );
+          },
+          accelerator: "CmdOrCtrl+E"
+        },
+        { type: "separator" },
+        {
+          label: "Beenden",
+          click() {
+            app.quit();
+          },
+          accelerator: "CmdOrCtrl+Q"
+        }
+      ]
+    },
+    {
+      label: "Edit",
+      submenu: [
+        {
+          role: "undo"
+        },
+        {
+          role: "redo"
+        },
+        {
+          type: "separator"
+        },
+        {
+          role: "cut"
+        },
+        {
+          role: "copy"
+        },
+        {
+          role: "paste"
+        },
+        {
+          role: "pasteandmatchstyle"
+        },
+        {
+          role: "delete"
+        },
+        {
+          role: "selectall"
+        }
+      ]
+    },
+    {
+      label: "View",
+      submenu: [
+        {
+          label: "Reload",
+          accelerator: "CmdOrCtrl+R",
+          click(item, focusedWindow) {
+            if (focusedWindow) focusedWindow.reload();
+          }
+        },
+        {
+          label: "Toggle Developer Tools",
+          accelerator:
+            process.platform === "darwin" ? "Alt+Command+I" : "Ctrl+Shift+I",
+          click(item, focusedWindow) {
+            if (focusedWindow) focusedWindow.webContents.toggleDevTools();
+          }
+        },
+        {
+          type: "separator"
+        },
+        {
+          role: "resetzoom"
+        },
+        {
+          role: "zoomin"
+        },
+        {
+          role: "zoomout"
+        },
+        {
+          type: "separator"
+        },
+        {
+          role: "togglefullscreen"
+        }
+      ]
+    }
+  ]);
+  Menu.setApplicationMenu(menu);
 
   win.loadURL(
     url.format({
