@@ -1,23 +1,30 @@
 <script>
-  export let validateWhat
+  export let validateWhat;
   import { validation, fetchValidation } from "../stores/main.js";
   let yes = true;
   let result;
-  let info
-  let softConstraints
-  let hardConstraints
+  let info;
+  let softConstraints;
+  let hardConstraints;
   fetchValidation(validateWhat);
   validation.subscribe(v => {
     if (v === null || v === undefined || v.length === 0) {
-      result = null
-      info = []
-      softConstraints = []
-      hardConstraints = []
+      result = null;
+      info = [];
+      softConstraints = [];
+      hardConstraints = [];
     } else {
       result = v.result;
-    info = v.brokenConstraints.filter(entry => entry.tag === "Info")
-    softConstraints = v.brokenConstraints.filter(entry => entry.tag === "SoftConstraintBroken")
-    hardConstraints = v.brokenConstraints.filter(entry => entry.tag === "HardConstraintBroken")
+      function filterFunc(t) {
+        return entry => entry.validationRecordType === t;
+      }
+      info = v.brokenConstraints.filter(filterFunc("Info"));
+      softConstraints = v.brokenConstraints.filter(
+        filterFunc("SoftConstraintBroken")
+      );
+      hardConstraints = v.brokenConstraints.filter(
+        filterFunc("HardConstraintBroken")
+      );
     }
   });
 </script>
@@ -48,12 +55,12 @@
     <h2>{result}</h2>
     <ul>
       {#each hardConstraints as val}
-        <li class={val.tag}> {val.contents} </li>
+        <li class={val.validationRecordType}> {val.validationRecordText} </li>
       {/each}
     </ul>
-        <ul>
+    <ul>
       {#each softConstraints as val}
-        <li class={val.tag}> {val.contents} </li>
+        <li class={val.validationRecordType}> {val.validationRecordText} </li>
       {/each}
     </ul>
   {/if}
