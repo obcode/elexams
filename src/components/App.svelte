@@ -1,11 +1,14 @@
 <script>
-  import { semesterConfig } from "../stores/main.js";
+  import { semesterConfig, validation } from "../stores/main.js";
   import { lecturers } from "../stores/lecturers.js";
+  import { plannedRooms } from "../stores/rooms.js";
+
   import Plan from "./Plan.svelte";
   import Rooms from "./Rooms.svelte";
   import NTA from "./NTA.svelte";
   let info = 2;
   let l = $lecturers; // FIXME: Problem ist Promise in readable
+  let p = $plannedRooms  // FIXME: Problem ist Promise in readable
 </script>
 
 <style>
