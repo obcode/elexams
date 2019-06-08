@@ -30,6 +30,7 @@
     text-align: center;
   }
   .days {
+    min-width: 200px;
     background-color: rgb(176, 190, 197);
     text-align: center;
   }

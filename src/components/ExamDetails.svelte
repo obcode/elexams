@@ -3,17 +3,23 @@
   let yes = true;
   let exam;
   clickedExamAnCode.subscribe(ac => {
-    fetchExam(ac);
+    if (ac === 0) {
+      exam = null;
+    } else {
+      fetchExam(ac);
+    }
   });
   async function fetchExam(ancode) {
-    let response = await fetch("http://localhost:8080/exam", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(ancode)
-    });
-    exam = await response.json();
+    if (ancode != 0) {
+      let response = await fetch("http://localhost:8080/exam", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(ancode)
+      });
+      exam = await response.json();
+    }
   }
 </script>
 

@@ -6,6 +6,7 @@
   import Validation from "./Validation.svelte";
   import { fetchValidation, semesterConfig } from "../stores/main.js";
   import {
+    allAncodes,
     refetchExams,
     showRegisteredGroups,
     showRooms,
@@ -80,6 +81,7 @@
     text-align: center;
   }
   .days {
+    min-width: 200px;
     background-color: rgb(176, 190, 197);
     text-align: center;
   }
@@ -110,8 +112,16 @@
     {#if $semesterConfig.scheduleFrozen}(keine Änderungen mehr möglich){/if}
   </h1>
   <button on:click={reloadPlan}>Reload Plan from Server</button>
-  Zeige Prüfung mit AnCode:
-  <input type="number" bind:value={ancode} on:change={setAncode} />
+  {#if $allAncodes.length > 0}
+    Zeige Prüfung mit AnCode:
+    <select bind:value={ancode} on:change={setAncode} name="ancode" id="ancode">
+      <option value="0">auswählen</option>
+      {#each $allAncodes as ancode}
+        <option value={ancode}> {ancode} </option>
+      {/each}
+    </select>
+  {/if}
+
   <ShowExamsByLecturer />
   <label>
     <input type="checkbox" on:click={toggleShowRegisteredGroups} />
@@ -166,7 +176,7 @@
       <td class="validation">
         <ExamDetails />
         <hr />
-        <Validation validateWhat="ValidateSchedule"/>
+        <Validation validateWhat="ValidateSchedule" />
       </td>
     </tr>
   </table>

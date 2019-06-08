@@ -2,6 +2,7 @@
   import { semesterConfig, validation } from "../stores/main.js";
   import { lecturers } from "../stores/lecturers.js";
   import { plannedRooms } from "../stores/rooms.js";
+  import { allAncodes } from "../stores/exams.js";
 
   import Plan from "./Plan.svelte";
   import Rooms from "./Rooms.svelte";
@@ -9,6 +10,7 @@
   let info = 2;
   let l = $lecturers; // FIXME: Problem ist Promise in readable
   let p = $plannedRooms  // FIXME: Problem ist Promise in readable
+  let a = $allAncodes  // FIXME: Problem ist Promise in readable
 </script>
 
 <style>
