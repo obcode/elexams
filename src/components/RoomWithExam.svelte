@@ -67,14 +67,18 @@
      {room.studentsInRoom.length} Stud - {exam.duration + room.deltaDuration}
     Minuten
   </span>
-  <span class="room" data-text="{exam.lecturer.personShortName} {exam.name}">
+  <span
+    class="room"
+    data-text="{exam.lecturer.personShortName}, {exam.anCode}. {exam.name}">
      {exam.name}
   </span>
 </div>
 
 {#if showModal}
   <Modal on:close={() => (showModal = false)}>
-    <h2 slot="header"> {exam.name}, {exam.lecturer.personShortName} </h2>
+    <h2 slot="header">
+       {exam.anCode}. {exam.name}, {exam.lecturer.personShortName}
+    </h2>
 
     <ol>
       {#each room.studentsInRoom as student}
