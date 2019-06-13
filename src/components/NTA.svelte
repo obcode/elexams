@@ -121,6 +121,11 @@
             {/if}
             <td> {entry[2].studentHandicap.handicapStudentname} </td>
             <td> {entry[2].studentHandicap.handicapCompensationText} </td>
+            {#if entry[2].studentHandicap.handicapNeedsRoomAlone}
+              <td>eigener Raum</td>
+            {:else}
+              <td />
+            {/if}
           </tr>
         {/each}
       {/each}

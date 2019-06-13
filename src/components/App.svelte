@@ -6,11 +6,12 @@
 
   import Plan from "./Plan.svelte";
   import Rooms from "./Rooms.svelte";
+  import Invigilation from "./Invigilation.svelte";
   import NTA from "./NTA.svelte";
-  let info = 2;
+  let info = 3;
   let l = $lecturers; // FIXME: Problem ist Promise in readable
-  let p = $plannedRooms  // FIXME: Problem ist Promise in readable
-  let a = $allAncodes  // FIXME: Problem ist Promise in readable
+  let p = $plannedRooms; // FIXME: Problem ist Promise in readable
+  let a = $allAncodes; // FIXME: Problem ist Promise in readable
 </script>
 
 <style>
@@ -46,6 +47,9 @@
     {/if}
     {#if info === 2}
       <Rooms />
+    {/if}
+    {#if info === 3}
+      <Invigilation />
     {/if}
     {#if info === 4}
       <NTA />
