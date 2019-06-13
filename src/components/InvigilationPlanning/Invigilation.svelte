@@ -1,10 +1,10 @@
 <script>
   import InvigilatorsOverview from "./InvigilatorsOverview.svelte";
   import InvigilationDay from "./InvigilationDay.svelte";
-  import Validation from "./Validation.svelte";
-  import { fetchInvigilations, refetch } from "../stores/invigilation.js";
-  import { semesterConfig, validation } from "../stores/main.js";
-  import { dateString } from "../misc.js";
+  import Validation from "../Validation.svelte";
+  import { fetchInvigilations, refetch } from "../../stores/invigilation.js";
+  import { semesterConfig, validation } from "../../stores/main.js";
+  import { dateString } from "../../misc.js";
   let dayIndex = 0; // TODO set -1
   function refresh() {
     fetchInvigilations()

@@ -6,7 +6,7 @@
     invigilator.invigilatorMinutesTodo -
       invigilator.invigilatorsMinutesPlanned <=
     60;
-  import { semesterConfig } from "../stores/main.js";
+  import { semesterConfig } from "../../stores/main.js";
 </script>
 
 <style>

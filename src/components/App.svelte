@@ -4,9 +4,9 @@
   import { plannedRooms } from "../stores/rooms.js";
   import { allAncodes } from "../stores/exams.js";
 
-  import Plan from "./Plan.svelte";
-  import Rooms from "./Rooms.svelte";
-  import Invigilation from "./Invigilation.svelte";
+  import Plan from "./ExamPlanning/Plan.svelte";
+  import Rooms from "./RoomPlanning/Rooms.svelte";
+  import Invigilation from "./InvigilationPlanning/Invigilation.svelte";
   import NTA from "./NTA.svelte";
   let info = 3;
   let l = $lecturers; // FIXME: Problem ist Promise in readable

@@ -4,7 +4,7 @@
   export let goSlot = false;
 
   import Exam from "./Exam.svelte";
-  import { fetchValidation } from "../stores/main.js";
+  import { fetchValidation } from "../../stores/main.js";
   import {
     refetchExams,
     conflictingAncodes,
@@ -12,7 +12,7 @@
     resetConflicting,
     clickedExamAnCode,
     setConflictingSlots
-  } from "../stores/exams.js";
+  } from "../../stores/exams.js";
 
   let exams = [];
   let studentCount = 0;

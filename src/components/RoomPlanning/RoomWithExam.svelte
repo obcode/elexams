@@ -1,6 +1,6 @@
 <script>
   export let roomWithExam;
-  import Modal from "./Modal.svelte";
+  import Modal from "../Modal.svelte";
   let showModal = false;
   const room = roomWithExam[0];
   const reserveRoom = room.reserveRoom;

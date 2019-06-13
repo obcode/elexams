@@ -1,8 +1,8 @@
 <script>
-  import { invigilations, fetchInvigilations } from "../stores/invigilation.js";
+  import { invigilations, fetchInvigilations } from "../../stores/invigilation.js";
   import InvigilatorTR from "./InvigilatorTR.svelte";
   fetchInvigilations();
-  import { semesterConfig } from "../stores/main.js";
+  import { semesterConfig } from "../../stores/main.js";
 </script>
 
 <style>

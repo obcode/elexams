@@ -10,9 +10,9 @@
     resetConflicting,
     showRegisteredGroups,
     showRooms
-  } from "../stores/exams.js";
-  import { semesterConfig } from "../stores/main.js";
-  import { selectedLecturer } from "../stores/lecturers.js";
+  } from "../../stores/exams.js";
+  import { semesterConfig } from "../../stores/main.js";
+  import { selectedLecturer } from "../../stores/lecturers.js";
   import { get } from "svelte/store";
   import Room from "./Room.svelte";
 

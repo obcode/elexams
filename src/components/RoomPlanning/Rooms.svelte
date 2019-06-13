@@ -1,10 +1,10 @@
 <script>
-  import { semesterConfig } from "../stores/main.js";
-  import { dateString, weekend } from "../misc.js";
-  import { showExams } from "../stores/rooms.js";
+  import { semesterConfig } from "../../stores/main.js";
+  import { dateString, weekend } from "../../misc.js";
+  import { showExams } from "../../stores/rooms.js";
   import RoomSlot from "./RoomSlot.svelte";
   import ShowOnlyRoom from "./ShowOnlyRoom.svelte";
-  import Validation from "./Validation.svelte";
+  import Validation from "../Validation.svelte";
 
   function toggleShowExams() {
     showExams.update(b => !b);

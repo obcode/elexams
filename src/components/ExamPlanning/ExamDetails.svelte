@@ -1,5 +1,5 @@
 <script>
-  import { clickedExamAnCode } from "../stores/exams.js";
+  import { clickedExamAnCode } from "../../stores/exams.js";
   let yes = true;
   let exam;
   clickedExamAnCode.subscribe(ac => {

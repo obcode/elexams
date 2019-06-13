@@ -2,8 +2,9 @@
   export let dayIndex;
   export let slotIndex;
 
-  import Exam from "./Exam.svelte";
-  import RoomWithExams from "./RoomWithExams.svelte";
+  import RoomWithExams from "../RoomPlanning/RoomWithExams.svelte";
+  import { fetchValidation } from "../../stores/main.js";
+  import { refetch } from "../../stores/invigilation.js";
 
   let slotByRooms = [];
   async function fetchSlotByRooms() {
@@ -17,6 +18,7 @@
     slotByRooms = await resp.json();
   }
   fetchSlotByRooms();
+  refetch.subscribe( _ => fetchSlotByRooms())
 </script>
 
 <style>

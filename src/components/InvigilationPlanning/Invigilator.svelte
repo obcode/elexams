@@ -1,7 +1,7 @@
 <script>
   export let invigilatorID;
   export let dayIndex;
-  import { invigilations } from "../stores/invigilation.js";
+  import { invigilations } from "../../stores/invigilation.js";
   let invigilator;
   let want;
   let can;

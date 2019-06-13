@@ -1,13 +1,13 @@
 <script>
   export let roomWithExams;
-  import { selectedRoom, showExams } from "../stores/rooms.js";
+  import { selectedRoom, showExams } from "../../stores/rooms.js";
   import RoomWithExam from "./RoomWithExam.svelte";
   const roomID = roomWithExams[0][0].roomID;
 
-  import Modal from "./Modal.svelte";
+  import Modal from "../Modal.svelte";
   let showModal = false;
 
-  import { plannedRooms } from "../stores/rooms.js";
+  import { plannedRooms } from "../../stores/rooms.js";
 
   let plannedRoom;
   function setPlannedRoom() {

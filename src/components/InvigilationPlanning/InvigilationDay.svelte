@@ -1,9 +1,9 @@
 <script>
   export let dayIndex;
-  import { invigilations, fetchInvigilations } from "../stores/invigilation.js";
+  import { invigilations, fetchInvigilations } from "../../stores/invigilation.js";
   fetchInvigilations();
-  import { semesterConfig, validation } from "../stores/main.js";
-  import { dateString } from "../misc.js";
+  import { semesterConfig, validation } from "../../stores/main.js";
+  import { dateString } from "../../misc.js";
   import Invigilator from "./Invigilator.svelte";
   import RoomSlotInvigilation from "./RoomSlotInvigilation.svelte";
   let invigs;

@@ -3,8 +3,8 @@
   import ExamDetails from "./ExamDetails.svelte";
   import ShowExamsByLecturer from "./ShowExamsByLecturer.svelte";
   import Unscheduled from "./Unscheduled.svelte";
-  import Validation from "./Validation.svelte";
-  import { fetchValidation, semesterConfig } from "../stores/main.js";
+  import Validation from "../Validation.svelte";
+  import { fetchValidation, semesterConfig } from "../../stores/main.js";
   import {
     allAncodes,
     refetchExams,
@@ -12,8 +12,8 @@
     showRooms,
     selectedExamAnCode,
     clickedExamAnCode
-  } from "../stores/exams.js";
-  import { dateString, weekend } from "../misc.js";
+  } from "../../stores/exams.js";
+  import { dateString, weekend } from "../../misc.js";
 
   function toggleShowRegisteredGroups() {
     showRegisteredGroups.update(b => !b);
