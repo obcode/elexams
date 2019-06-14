@@ -39,13 +39,10 @@
         <table>
           <tr>
             <th>Aufsichten</th>
+            <th>TODO</th>
           </tr>
           {#each $invigilations[1] as invigilator}
-            <tr>
-              <Invigilator
-                invigilatorID={invigilator.invigilatorID}
-                {dayIndex} />
-            </tr>
+            <Invigilator invigilatorID={invigilator.invigilatorID} {dayIndex} />
           {/each}
         </table>
       </td>

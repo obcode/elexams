@@ -26,6 +26,9 @@
 </script>
 
 <style>
+  td {
+    padding: 4px;
+  }
   .invigilator {
     font-size: 12px;
   }
@@ -40,15 +43,18 @@
     color: darkgrey;
   }
   .right {
-    float: right;
+    text-align: right;
+  }
+  .center {
+    text-align: center;
   }
 </style>
 
-<div class="invigilator" class:want class:can class:notAvailable>
-   {invigilator.invigilatorName}
-  <span class="right">
+<tr class="invigilator" class:want class:can class:notAvailable>
+  <td> {invigilator.invigilatorName} </td>
+  <td class="right">
      {invigilator.invigilatorMinutesTodo - invigilator.invigilatorsMinutesPlanned}
 
-  </span>
-
-</div>
+  </td>
+  <td class="center"> {invigilator.invigilatorInvigilationDays} </td>
+</tr>
