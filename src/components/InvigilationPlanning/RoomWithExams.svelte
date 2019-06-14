@@ -1,7 +1,10 @@
 <script>
   export let dayIndex
   export let roomWithExams;
+  let slotIndex = roomWithExams[0][1].slot[1]
   import { selectedRoom, showExams } from "../../stores/rooms.js";
+  import { refetch, fetchInvigilations } from "../../stores/invigilation.js";
+  import { fetchValidation } from "../../stores/main.js";
   import RoomWithExam from "./RoomWithExam.svelte";
   const room = roomWithExams[0][0];
   const roomID = room.roomID;
@@ -41,6 +44,44 @@
   selectedRoom.subscribe(selRoom => {
     showMe = selRoom === "alle" || selRoom === roomID;
   });
+  let draggedOver = false;
+  function dragOver(event) {
+    event.preventDefault();
+  }
+
+  function dragEnter(event) {
+    event.preventDefault();
+    draggedOver = true;
+  }
+
+  function dragLeave() {
+    event.preventDefault();
+    draggedOver = false;
+  }
+
+  function dragDrop(event) {
+    event.preventDefault();
+    draggedOver = false;
+    const invigilatorID = JSON.parse(
+      event.dataTransfer.getData("invigilatorID")
+    );
+    const invigilation = {
+      addInvigilatorID: invigilatorID,
+      addInvigilatorSlot: [dayIndex, slotIndex],
+      addInvigilatorRoom: roomID
+    };
+    fetch("http://localhost:8080/addInvigilator", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(invigilation)
+    }).then(() => {
+      refetch.update(i => i + 1);
+      fetchInvigilations();
+      fetchValidation("ValidateInvigilation");
+    });
+  }
 </script>
 
 <style>
@@ -63,11 +104,20 @@
   .hasInvigilator {
     background-color: lightgreen;
   }
+    .draggedOver {
+    background-color: green;
+  }
 </style>
 
 {#if showMe}
   {#if roomWithExams !== undefined && roomWithExams !== null && roomWithExams.length > 0}
-    <div class="room {room.roomID}" class:hasInvigilator>
+    <div class="room {room.roomID}"     
+    class:draggedOver
+    class:hasInvigilator
+    on:dragover={dragOver}
+    on:dragenter={dragEnter}
+    on:dragleave={dragLeave}
+    on:drop={dragDrop} >
       <span class="roomID" on:click={() => (showModal = true)}> {roomID} </span>
       <span class="studentCount" class:problem class:full>
          {studentsInRoom} / {room.maxSeats}

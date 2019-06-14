@@ -15,6 +15,7 @@ export async function fetchInvigilations() {
 }
 
 export const refetch = writable(0);
+export const refetchInvigilator = writable(0);
 
 export const slotsForDay = writable([]);
 export const slotsByRooms = writable([]);

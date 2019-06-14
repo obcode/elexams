@@ -1,19 +1,28 @@
 <script>
   export let invigilatorID;
   export let dayIndex;
-  import { invigilations } from "../../stores/invigilation.js";
+  import { invigilations, refetchInvigilator, fetchInvigilations } from "../../stores/invigilation.js";
   let invigilator;
   let want;
   let can;
   let notAvailable;
+  let draggable;
+
+  refetchInvigilator.subscribe(id => {
+    if (id === invigilatorID) {
+      fetchInvigilations()
+    }
+  })
 
   invigilations.subscribe(is => {
     invigilator = is[1].find(i => i.invigilatorID == invigilatorID);
     want =
       invigilator !== null &&
       invigilator !== undefined &&
-      invigilator.invigilatorWantDays.includes(dayIndex);
-    can =
+      (invigilator.invigilatorWantDays.includes(dayIndex)
+      || invigilator.invigilatorInvigilationDays.includes(dayIndex))
+      ;
+    can = !want &&
       invigilator !== null &&
       invigilator !== undefined &&
       invigilator.invigilatorCanDays.includes(dayIndex);
@@ -22,7 +31,24 @@
       invigilator.invigilatorMinutesTodo -
         invigilator.invigilatorsMinutesPlanned <
         0;
+    draggable = !notAvailable;
   });
+
+  let dragged = false;
+  let draggedElement;
+
+  function dragStart(event) {
+    dragged = true;
+    draggedElement = this;
+    event.dataTransfer.setData(
+      "invigilatorID",
+      JSON.stringify(invigilator.invigilatorID)
+    );
+  }
+  function dragEnd(event) {
+    dragged = false;
+    draggedElement = this;
+  }
 </script>
 
 <style>
@@ -33,7 +59,7 @@
     font-size: 12px;
   }
   .want {
-    background-color: green;
+    background-color: rgb(11, 182, 11);
   }
   .can {
     background-color: yellow;
@@ -48,9 +74,20 @@
   .center {
     text-align: center;
   }
+  .dragged {
+    border: solid black 4px;
+  }
 </style>
 
-<tr class="invigilator" class:want class:can class:notAvailable>
+<tr
+  class="invigilator"
+  {draggable}
+  class:dragged
+  class:want
+  class:can
+  class:notAvailable
+  on:dragstart={dragStart}
+  on:dragend={dragEnd}>
   <td> {invigilator.invigilatorName} </td>
   <td class="right">
      {invigilator.invigilatorMinutesTodo - invigilator.invigilatorsMinutesPlanned}

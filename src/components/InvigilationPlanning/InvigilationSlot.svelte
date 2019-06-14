@@ -1,6 +1,8 @@
 <script>
   export let slotIndex;
   export let slotTime;
+    import RoomSlot from "./RoomSlot.svelte";
+    import Reserve from "./Reserve.svelte";
   import { slotsForDay, refetch } from "../../stores/invigilation.js";
   let mySlot = [];
   let dayIndex;
@@ -20,7 +22,7 @@
   });
 
   refetch.update(i => i + 1);
-  import RoomSlot from "./RoomSlot.svelte";
+  
 </script>
 
 <style>
@@ -34,7 +36,7 @@
     <td class="bordered">
       ({dayIndex}, {slotIndex}) {slotTime}
       <br />
-      Reserve
+      <Reserve {dayIndex} {slotIndex} />
     </td>
     <td class="bordered">
       <RoomSlot {dayIndex} {slotIndex} />
