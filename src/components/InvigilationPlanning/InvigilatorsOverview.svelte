@@ -1,5 +1,8 @@
 <script>
-  import { invigilations, fetchInvigilations } from "../../stores/invigilation.js";
+  import {
+    invigilations,
+    fetchInvigilations
+  } from "../../stores/invigilation.js";
   import InvigilatorTR from "./InvigilatorTR.svelte";
   fetchInvigilations();
   import { semesterConfig } from "../../stores/main.js";
@@ -8,7 +11,6 @@
 <style>
   table,
   tr,
-  td,
   th {
     border-collapse: collapse;
     user-select: none;

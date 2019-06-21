@@ -10,10 +10,8 @@
 </script>
 
 <style>
-  table,
   tr,
-  td,
-  th {
+  td {
     border-collapse: collapse;
     user-select: none;
     border: 1px solid black;
