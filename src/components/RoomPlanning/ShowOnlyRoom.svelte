@@ -1,8 +1,8 @@
 <script>
-  import { selectedLecturer, lecturers } from "../stores/lecturers.js";
-  let selected = 0;
+  import { plannedRooms, selectedRoom } from "../../stores/rooms.js";
+  let selected = $selectedRoom;
   function setSelected() {
-    selectedLecturer.set(selected);
+    selectedRoom.set(selected);
   }
 </script>
 
@@ -29,18 +29,13 @@
   }
 </style>
 
-{#if $lecturers.length > 0}
-  Zeige Prüfungen von
-  <select
-    bind:value={selected}
-    on:change={setSelected}
-    name="lecturer"
-    id="lecturer">
-    <option value="0">Prüfer</option>
-    {#each $lecturers as lecturer}
-      <option class={lecturer.personFK} value={lecturer.personID}>
-         {lecturer.personShortName}
-        {#if lecturer.personIsLBA}(LBA){/if}
+{#if $plannedRooms.length > 0}
+  Zeige nur Raum
+  <select bind:value={selected} on:change={setSelected} name="room" id="room">
+    <option value="alle">alle</option>
+    {#each $plannedRooms as plannedRoom}
+      <option value={plannedRoom.plannedRoomID}>
+         {plannedRoom.plannedRoomID}
       </option>
     {/each}
   </select>

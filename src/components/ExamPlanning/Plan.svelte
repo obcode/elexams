@@ -3,19 +3,24 @@
   import ExamDetails from "./ExamDetails.svelte";
   import ShowExamsByLecturer from "./ShowExamsByLecturer.svelte";
   import Unscheduled from "./Unscheduled.svelte";
-  import Validation from "./Validation.svelte";
+  import Validation from "../Validation.svelte";
+  import { fetchValidation, semesterConfig } from "../../stores/main.js";
   import {
-    fetchValidation,
-    semesterConfig
-  } from "../stores/main.js";
-  import {
+    allAncodes,
     refetchExams,
     showRegisteredGroups,
+    showRooms,
     selectedExamAnCode,
     clickedExamAnCode
-  } from "../stores/exams.js";
+  } from "../../stores/exams.js";
+  import { dateString, weekend } from "../../misc.js";
+
   function toggleShowRegisteredGroups() {
     showRegisteredGroups.update(b => !b);
+  }
+
+  function toggleShowRooms() {
+    showRooms.update(b => !b);
   }
 
   let ancode = 0;
@@ -31,28 +36,12 @@
     return false;
   }
 
-  function dateString(date) {
-    const d = new Date(date);
-    const options = {
-      weekday: "short",
-      year: "2-digit",
-      month: "2-digit",
-      day: "2-digit"
-    };
-    return d.toLocaleString("de-DE", options);
-  }
-
-  function weekend(date) {
-    const d = new Date(date);
-    return d.getDay() === 5;
-  }
-
   async function reloadPlan() {
     const reloadResult = await fetch("http://localhost:8080/reloadPlan");
     const jsonResult = await reloadResult.json();
     if (jsonResult) {
       refetchExams.set([]);
-      fetchValidation();
+      fetchValidation("ValidateSchedule");
       if (jsonResult[0]) {
         let output = "Erfolgreich!!\n";
         for (const info of jsonResult[1]) {
@@ -92,6 +81,7 @@
     text-align: center;
   }
   .days {
+    min-width: 200px;
     background-color: rgb(176, 190, 197);
     text-align: center;
   }
@@ -117,13 +107,29 @@
 {#if $semesterConfig === undefined || $semesterConfig === null}
   Loading...
 {:else}
+  <h1>
+    Prüfungsplanung
+    {#if $semesterConfig.scheduleFrozen}(keine Änderungen mehr möglich){/if}
+  </h1>
   <button on:click={reloadPlan}>Reload Plan from Server</button>
-  Zeige Prüfung mit AnCode:
-  <input type="number" bind:value={ancode} on:change={setAncode} />
+  {#if $allAncodes.length > 0}
+    Zeige Prüfung mit AnCode:
+    <select bind:value={ancode} on:change={setAncode} name="ancode" id="ancode">
+      <option value="0">auswählen</option>
+      {#each $allAncodes as ancode}
+        <option value={ancode}> {ancode} </option>
+      {/each}
+    </select>
+  {/if}
+
   <ShowExamsByLecturer />
   <label>
     <input type="checkbox" on:click={toggleShowRegisteredGroups} />
-    Show Registered Groups
+    zeige Anmeldungen
+  </label>
+  <label>
+    <input type="checkbox" on:click={toggleShowRooms} />
+    zeige Räume
   </label>
   <table>
     <tr>
@@ -170,7 +176,7 @@
       <td class="validation">
         <ExamDetails />
         <hr />
-        <Validation />
+        <Validation validateWhat="ValidateSchedule" />
       </td>
     </tr>
   </table>

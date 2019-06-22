@@ -11,13 +11,13 @@ export const semesterConfig = readable(null, async set => {
 
 export const validation = writable([]);
 
-export const fetchValidation = async () => {
+export async function fetchValidation(validateWhat) {
   let response = await fetch("http://localhost:8080/validation", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(["ValidateSchedule"])
+    body: JSON.stringify([validateWhat])
   });
   const validationVal = await response.json();
   validation.set(validationVal);

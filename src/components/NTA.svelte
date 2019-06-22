@@ -36,35 +36,99 @@
       "Mit freundlichen Grüßen\nOliver Braun";
     return encodeURI(link);
   }
+
+  function calcRowspanExam(exams) {
+    let rowspan = 0;
+    for (const exam of exams) {
+      rowspan += exam.handicapStudents.length;
+    }
+    return rowspan;
+  }
+
+  function flattenArray(allExams) {
+    let array = [];
+    for (const exams of allExams) {
+      let lecturerSet = false;
+      let arrayForLecturer = [];
+      for (const exam of exams) {
+        let examSet = false;
+        for (const stud of exam.handicapStudents) {
+          if (!lecturerSet) {
+            lecturerSet = true;
+            examSet = true;
+            // first entry
+            arrayForLecturer.push([exams, exam, stud]);
+          } else {
+            if (!examSet) {
+              examSet = true;
+              // not the first exam of lecturer
+              arrayForLecturer.push([null, exam, stud]);
+            } else {
+              arrayForLecturer.push([null, null, stud]);
+            }
+          }
+        }
+      }
+      array.push(arrayForLecturer);
+    }
+    return array;
+  }
 </script>
 
-<h1>NTA</h1>
+<style>
+  .center {
+    margin: auto;
+    width: 90%;
+    padding: 10px;
+  }
+  table,
+  tr,
+  td {
+    padding: 10px;
+    border: 1px solid black;
+    border-collapse: collapse;
+    user-select: none;
+    vertical-align: top;
+    font-size: 12px;
+  }
+  table {
+    border-radius: 12px;
+    border: 5px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2),
+      0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+</style>
 
 {#if examsWithNTA === undefined}
-  Loading...
+  <h1>Loading...</h1>
 {:else}
-  <ul>
-    {#each examsWithNTA as exams}
-      <li>
-         {exams[0].lecturer.personFullName}
-        <a href={mailtoLink(exams[0].lecturer, exams)}>E-Mail</a>
-
-        <ul>
-          {#each exams as exam}
-            <li>
-               {exam.name}
-              <ul>
-                {#each exam.handicapStudents as stud}
-                  <li>
-                     {stud.studentHandicap.handicapStudentname}: {stud.studentHandicap.handicapCompensationText}
-
-                  </li>
-                {/each}
-              </ul>
-            </li>
-          {/each}
-        </ul>
-      </li>
-    {/each}
-  </ul>
+  <div class="center">
+    <h1>Prüfungen mit Studierenden mit Nachteilsausgleich</h1>
+    <table>
+      {#each flattenArray(examsWithNTA) as lecturerArray}
+        {#each lecturerArray as entry}
+          <tr>
+            {#if entry[0] !== null}
+              <td rowspan={calcRowspanExam(entry[0])}>
+                <a href={mailtoLink(entry[0][0].lecturer, entry[0])}>E-Mail</a>
+                 {entry[0][0].lecturer.personFullName}
+              </td>
+            {/if}
+            {#if entry[1] !== null}
+              <td rowspan={entry[1].handicapStudents.length}>
+                 {entry[1].name}
+              </td>
+            {/if}
+            <td> {entry[2].studentHandicap.handicapStudentname} </td>
+            <td> {entry[2].studentHandicap.handicapCompensationText} </td>
+            {#if entry[2].studentHandicap.handicapNeedsRoomAlone}
+              <td>eigener Raum</td>
+            {:else}
+              <td />
+            {/if}
+          </tr>
+        {/each}
+      {/each}
+    </table>
+  </div>
 {/if}

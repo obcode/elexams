@@ -8,13 +8,16 @@
     conflictingSlots,
     setConflictingSlots,
     resetConflicting,
-    showRegisteredGroups
-  } from "../stores/exams.js";
-  import { selectedLecturer } from "../stores/lecturers.js";
+    showRegisteredGroups,
+    showRooms
+  } from "../../stores/exams.js";
+  import { semesterConfig } from "../../stores/main.js";
+  import { selectedLecturer } from "../../stores/lecturers.js";
   import { get } from "svelte/store";
+  import Room from "./Room.svelte";
 
   const notPlannedByMe = !exam.plannedByMe;
-  const draggable = exam.plannedByMe;
+  const draggable = !$semesterConfig.scheduleFrozen && exam.plannedByMe;
   const reExam = exam.reExam;
   let dragged = false;
   let invisible = false;
@@ -81,10 +84,6 @@
       }
     }
   });
-
-  let registeredGroup = false;
-
-  showRegisteredGroups.subscribe(b => (registeredGroup = b));
 
   function dragStart(event) {
     dragged = true;
@@ -241,7 +240,7 @@
   {#if conflicting}
     Student-Conflicts:
     <span class="conflictingStudents">{studsWithConflicts}</span>
-  {:else if registeredGroup}
+  {:else if $showRegisteredGroups}
     {#each exam.registeredGroups as registeredGroup, index}
       {#if index > 0},{/if}
       <span class="registeredGroup {registeredGroup.registeredGroupDegree}">
@@ -250,5 +249,13 @@
     {/each}
   {:else}
     <br />
+  {/if}
+  {#if $showRooms}
+    {#each exam.rooms as room, index}
+      {#if index > 0}
+        <br />
+      {/if}
+      <Room {room} {exam} />
+    {/each}
   {/if}
 </div>

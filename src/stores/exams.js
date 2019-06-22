@@ -1,4 +1,11 @@
-import { writable } from "svelte/store";
+import { writable, readable } from "svelte/store";
+
+export const allAncodes = readable([], async set => {
+  const response = await fetch("http://localhost:8080/exams");
+  const exams = await response.json();
+  set(exams.map(e => e.anCode));
+  return () => {};
+});
 
 export const refetchExams = writable([-1, -1]);
 
@@ -27,3 +34,5 @@ export const clickedExamAnCode = writable(0);
 export const examsInSameSlot = writable([]);
 
 export const showRegisteredGroups = writable(false);
+
+export const showRooms = writable(false);
