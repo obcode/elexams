@@ -12,18 +12,26 @@
   let slot = [];
   let reserveInvigilator = null;
   let hasInvigilator = reserveInvigilator !== null;
+  let needsInvigilator = true;
+
+  $: setDetails($slotsForDay, dayIndex, slotIndex);
 
   slotsForDay.subscribe(s => {
     slot = [];
     reserveInvigilator = null;
+    setDetails(s);
+  });
+
+  function setDetails(s) {
     if (s !== null && s !== undefined && s.length > 1) {
       slot = s.find(sl => sl[0][0] == dayIndex && sl[0][1] == slotIndex);
     }
     if (slot !== undefined && slot !== null && slot.length > 0) {
+      needsInvigilator = Object.entries(slot[1].examsInSlot).length !== 0;
       reserveInvigilator = slot[1].reserveInvigilator;
     }
     hasInvigilator = reserveInvigilator !== null;
-  });
+  }
 
   let draggedOver = false;
   function dragOver(event) {
@@ -77,18 +85,20 @@
   }
 </style>
 
-{#if slot !== null && slot !== undefined && slot.length > 0}
-  <div
-    class="missing"
-    class:draggedOver
-    class:hasInvigilator
-    on:dragover={dragOver}
-    on:dragenter={dragEnter}
-    on:dragleave={dragLeave}
-    on:drop={dragDrop}>
-    ({slot[0][0]}, {slot[0][1]})
-    <br />
-    Reserve:
-    {#if hasInvigilator}{reserveInvigilator.invigilatorName}{:else}fehlt{/if}
-  </div>
+{#if needsInvigilator}
+  {#if slot !== null && slot !== undefined && slot.length > 0}
+    <div
+      class="missing"
+      class:draggedOver
+      class:hasInvigilator
+      on:dragover={dragOver}
+      on:dragenter={dragEnter}
+      on:dragleave={dragLeave}
+      on:drop={dragDrop}>
+      ({slot[0][0]}, {slot[0][1]})
+      <br />
+      Reserve:
+      {#if hasInvigilator}{reserveInvigilator.invigilatorName}{:else}fehlt{/if}
+    </div>
+  {/if}
 {/if}

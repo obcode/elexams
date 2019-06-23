@@ -5,7 +5,6 @@ import { semesterConfig } from "./main.js";
 export const invigilations = writable(null);
 
 export async function fetchInvigilations() {
-  invigilations.set([[], []]);
   const resp = await fetch("http://localhost:8080/invigilators");
   const invigs = await resp.json();
   invigs[1] = invigs[1].sort((a, b) =>
@@ -21,8 +20,8 @@ export const slotsForDay = writable([]);
 export const slotsByRooms = writable([]);
 
 export async function fetchSlotsForDay(day) {
-  slotsForDay.set([]);
-  slotsByRooms.set([]);
+  // slotsForDay.set([]);
+  // slotsByRooms.set([]);
   const resp = await fetch("http://localhost:8080/slotsForDay", {
     method: "POST",
     headers: {

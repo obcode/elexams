@@ -2,10 +2,19 @@
   export let roomWithExam;
   import Modal from "../Modal.svelte";
   let showModal = false;
-  const room = roomWithExam[0];
-  const reserveRoom = room.reserveRoom;
-  const handicapCompensation = room.handicapCompensation;
-  const exam = roomWithExam[1];
+  let room;
+  let reserveRoom;
+  let handicapCompensation;
+  let exam;
+
+  function setDetails(r) {
+    room = r[0];
+    reserveRoom = room.reserveRoom;
+    handicapCompensation = room.handicapCompensation;
+    exam = r[1];
+  }
+
+  $: setDetails(roomWithExam);
 </script>
 
 <style>
@@ -64,8 +73,7 @@
   class:handicapCompensation
   on:click={() => (showModal = true)}>
   <span>
-      {exam.slot}:
-     {room.studentsInRoom.length} Stud - {exam.duration + room.deltaDuration}
+     {exam.slot}: {room.studentsInRoom.length} Stud - {exam.duration + room.deltaDuration}
     Minuten
   </span>
   <span

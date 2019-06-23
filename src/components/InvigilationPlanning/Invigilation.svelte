@@ -1,4 +1,6 @@
 <script>
+  import { onMount } from "svelte";
+
   import InvigilatorsOverview from "./InvigilatorsOverview.svelte";
   import InvigilationDay from "./InvigilationDay.svelte";
   import Validation from "../Validation.svelte";
@@ -6,10 +8,13 @@
   import { semesterConfig, validation } from "../../stores/main.js";
   import { dateString } from "../../misc.js";
   let dayIndex = 0; // TODO set -1
-  function refresh() {
-    fetchInvigilations()
-    refetch.update(i => i+1)
-  }
+
+  onMount(() => fetchInvigilations());
+
+  // function refresh() {
+  //   // fetchInvigilations()
+  //   // refetch.update(i => i+1)
+  // }
 </script>
 
 <style>
@@ -29,11 +34,7 @@
 
 {#if $semesterConfig !== null && $semesterConfig !== undefined && $semesterConfig.examDays.length > 0}
   Aufsichten planen:
-  <select
-    bind:value={dayIndex}
-    on:change={refresh}
-    name="ancode"
-    id="ancode">
+  <select bind:value={dayIndex} name="ancode" id="ancode">
     <option value="-1">Übersicht</option>
     {#each $semesterConfig.examDays as day, index}
       <option value={index}>({index}) {dateString(day)} </option>

@@ -1,11 +1,12 @@
 import { writable, readable } from "svelte/store";
 
-export const semesterConfig = readable(null, async set => {
-  const response = await fetch("http://localhost:8080/semesterConfig").catch(
-    error => alert("Fehler: vermutlich läuft plexams-server nicht!")
-  );
-  const sc = await response.json();
-  set(sc);
+export const semesterConfig = readable(null, set => {
+  fetch("http://localhost:8080/semesterConfig")
+    .then(response => {
+      return response.json();
+    })
+    .then(sc => set(sc))
+    .catch(error => alert("Fehler: vermutlich läuft plexams-server nicht!"));
   return () => {};
 });
 
@@ -21,4 +22,4 @@ export async function fetchValidation(validateWhat) {
   });
   const validationVal = await response.json();
   validation.set(validationVal);
-};
+}

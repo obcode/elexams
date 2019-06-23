@@ -1,9 +1,13 @@
 import { writable, readable } from "svelte/store";
 
-export const allAncodes = readable([], async set => {
-  const response = await fetch("http://localhost:8080/exams");
-  const exams = await response.json();
-  set(exams.map(e => e.anCode));
+export const allAncodes = readable([], set => {
+  fetch("http://localhost:8080/exams")
+    .then(response => {
+      return response.json();
+    })
+    .then(exams => {
+      return set(exams.map(e => e.anCode).sort());
+    });
   return () => {};
 });
 
