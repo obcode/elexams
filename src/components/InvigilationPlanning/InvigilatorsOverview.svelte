@@ -1,11 +1,12 @@
 <script>
+  import { onMount } from 'svelte';
   import {
     invigilations,
     fetchInvigilations
   } from "../../stores/invigilation.js";
   import InvigilatorTR from "./InvigilatorTR.svelte";
-  fetchInvigilations();
   import { semesterConfig } from "../../stores/main.js";
+  onMount(() => fetchInvigilations())
 </script>
 
 <style>

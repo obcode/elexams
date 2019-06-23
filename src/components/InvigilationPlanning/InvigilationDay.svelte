@@ -7,20 +7,19 @@
     slotsForDay,
     refetch
   } from "../../stores/invigilation.js";
-  fetchInvigilations();
+  // fetchInvigilations();
   import { semesterConfig, validation } from "../../stores/main.js";
   import { dateString } from "../../misc.js";
   import Invigilator from "./Invigilator.svelte";
   import InvigilationSlot from "./InvigilationSlot.svelte";
 
   let slotsForThisDay = [];
-  fetchSlotsForDay(dayIndex);
-  refetch.subscribe(_ => fetchSlotsForDay(dayIndex));
+  $: fetchSlotsForDay(dayIndex);
+  refetch.subscribe(_ => {
+    console.log(`refetching for day ${dayIndex}`);
+    fetchSlotsForDay(dayIndex);
+  });
   slotsForDay.subscribe(s => (slotsForThisDay = s));
-  function slotForSlot(slotIndex) {
-    return slotsForDay[slotIndex];
-  }
-  let invigs;
 </script>
 
 <style>
@@ -40,10 +39,11 @@
           <tr>
             <th>Aufsichten</th>
             <th>TODO</th>
+            <th>eingeplant</th>
           </tr>
           {#each $invigilations[1] as invigilator}
             <Invigilator invigilatorID={invigilator.invigilatorID} {dayIndex} />
-          {/each}
+          {:else}keine Aufsichten{/each}
         </table>
       </td>
       <td>
@@ -53,7 +53,7 @@
           </tr>
           {#if slotsForThisDay.length > 0}
             {#each $semesterConfig.slotsPerDay as slotTime, slotIndex}
-              <InvigilationSlot {slotIndex} {slotTime} />
+              <InvigilationSlot {dayIndex} {slotIndex} {slotTime} />
             {/each}
           {/if}
         </table>

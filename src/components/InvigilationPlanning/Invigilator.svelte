@@ -1,37 +1,53 @@
 <script>
   export let invigilatorID;
   export let dayIndex;
-  import { invigilations, refetchInvigilator, fetchInvigilations } from "../../stores/invigilation.js";
+
+  import { onMount } from "svelte";
+  import {
+    invigilations,
+    refetchInvigilator,
+    fetchInvigilations
+  } from "../../stores/invigilation.js";
   let invigilator;
   let want;
   let can;
   let notAvailable;
+  let alreadyEnough;
   let draggable;
 
-  refetchInvigilator.subscribe(id => {
-    if (id === invigilatorID) {
-      fetchInvigilations()
-    }
-  })
+  $: {
+    invigilator = $invigilations[1].find(i => i.invigilatorID == invigilatorID);
+    setInvigilatorDetails(invigilator, dayIndex);
+  }
 
-  invigilations.subscribe(is => {
-    invigilator = is[1].find(i => i.invigilatorID == invigilatorID);
+  function setInvigilatorDetails(invigilator) {
     want =
       invigilator !== null &&
       invigilator !== undefined &&
-      (invigilator.invigilatorWantDays.includes(dayIndex)
-      || invigilator.invigilatorInvigilationDays.includes(dayIndex))
-      ;
-    can = !want &&
+      (invigilator.invigilatorWantDays.includes(dayIndex) ||
+        invigilator.invigilatorInvigilationDays.includes(dayIndex));
+    can =
+      !want &&
       invigilator !== null &&
       invigilator !== undefined &&
       invigilator.invigilatorCanDays.includes(dayIndex);
-    notAvailable =
-      (!want && !can) ||
+    notAvailable = !want && !can;
+    alreadyEnough =
       invigilator.invigilatorMinutesTodo -
         invigilator.invigilatorsMinutesPlanned <
-        0;
+      0;
     draggable = !notAvailable;
+  }
+
+  refetchInvigilator.subscribe(id => {
+    if (id === invigilatorID) {
+      fetchInvigilations();
+    }
+  });
+
+  invigilations.subscribe(is => {
+    invigilator = is[1].find(i => i.invigilatorID == invigilatorID);
+    setInvigilatorDetails(invigilator);
   });
 
   let dragged = false;
@@ -64,6 +80,9 @@
   .can {
     background-color: yellow;
   }
+  .alreadyEnough {
+    background-color: orange;
+  }
   .notAvailable {
     background-color: grey;
     color: darkgrey;
@@ -85,10 +104,11 @@
   class:dragged
   class:want
   class:can
+  class:alreadyEnough
   class:notAvailable
   on:dragstart={dragStart}
   on:dragend={dragEnd}>
-  <td> {invigilator.invigilatorName} </td>
+  <td>{invigilator.invigilatorName} </td>
   <td class="right">
      {invigilator.invigilatorMinutesTodo - invigilator.invigilatorsMinutesPlanned}
 

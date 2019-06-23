@@ -1,6 +1,6 @@
 {
   "name": "elexams",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A frontend for obcode/plexams server",
   "main": "dist/main.js",
   "private": true,

@@ -1,17 +1,11 @@
 <script>
   import { semesterConfig, validation } from "../stores/main.js";
-  import { lecturers } from "../stores/lecturers.js";
-  import { plannedRooms } from "../stores/rooms.js";
-  import { allAncodes } from "../stores/exams.js";
 
   import Plan from "./ExamPlanning/Plan.svelte";
   import Rooms from "./RoomPlanning/Rooms.svelte";
   import Invigilation from "./InvigilationPlanning/Invigilation.svelte";
   import NTA from "./NTA.svelte";
-  let info = 3;
-  let l = $lecturers; // FIXME: Problem ist Promise in readable
-  let p = $plannedRooms; // FIXME: Problem ist Promise in readable
-  let a = $allAncodes; // FIXME: Problem ist Promise in readable
+  let info = "invigs";
 </script>
 
 <style>
@@ -19,39 +13,35 @@
 </style>
 
 <main>
-
   {#if $semesterConfig === undefined || $semesterConfig === null}
     Loading...
   {:else}
     <h1>Prüfungsplan {$semesterConfig.semester}</h1>
     <div>
       <label>
-        <input type="radio" bind:group={info} value={1} />
+        <input type="radio" bind:group={info} value="plan" />
         Prüfungsplanung
       </label>
       <label>
-        <input type="radio" bind:group={info} value={2} />
+        <input type="radio" bind:group={info} value="rooms" />
         Raumplanung
       </label>
       <label>
-        <input type="radio" bind:group={info} value={3} />
+        <input type="radio" bind:group={info} value="invigs" />
         Aufsichtenplanung
       </label>
       <label>
-        <input type="radio" bind:group={info} value={4} />
+        <input type="radio" bind:group={info} value="nta" />
         NTA
       </label>
     </div>
-    {#if info === 1}
+    {#if info === 'plan'}
       <Plan />
-    {/if}
-    {#if info === 2}
+    {:else if info === 'rooms'}
       <Rooms />
-    {/if}
-    {#if info === 3}
+    {:else if info === 'invigs'}
       <Invigilation />
-    {/if}
-    {#if info === 4}
+    {:else if info === 'nta'}
       <NTA />
     {/if}
   {/if}
