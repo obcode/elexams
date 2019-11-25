@@ -5,7 +5,7 @@
   import Rooms from "./RoomPlanning/Rooms.svelte";
   import Invigilation from "./InvigilationPlanning/Invigilation.svelte";
   import NTA from "./NTA.svelte";
-  let info = "invigs";
+  let info = "plan";
 </script>
 
 <style>
