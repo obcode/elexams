@@ -110,9 +110,11 @@
         planManipSlot: slotIndex
       })
     }).then(() => {
-      refetchExams.set([exam.slot[0], exam.slot[1]]);
+      if (exam.slot !== null && exam.slot !== undefined) {
+        refetchExams.set([exam.slot[0], exam.slot[1]]);
+      }
       fetchExams();
-      fetchValidation();
+      fetchValidation("ValidateSchedule");
       // TODO: update von conflicts bei drag und drop funktioniert nicht richtig
       setConflictingSlots($clickedExamAnCode);
       conflictingAncodes.update(as => as);
