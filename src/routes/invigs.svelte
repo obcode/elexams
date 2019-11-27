@@ -1,13 +1,13 @@
 <script>
   import { onMount } from "svelte";
 
-  import InvigilatorsOverview from "./InvigilatorsOverview.svelte";
-  import InvigilationDay from "./InvigilationDay.svelte";
-  import Validation from "../Validation.svelte";
-  import { fetchInvigilations, refetch } from "../../stores/invigilation.js";
-  import { semesterConfig, validation } from "../../stores/main.js";
-  import { dateString } from "../../misc.js";
-  let dayIndex = 0; // TODO set -1
+  import InvigilatorsOverview from "../components/InvigilationPlanning/InvigilatorsOverview.svelte";
+  import InvigilationDay from "../components/InvigilationPlanning/InvigilationDay.svelte";
+  import Validation from "../components/Validation.svelte";
+  import { fetchInvigilations, refetch } from "../stores/invigilation.js";
+  import { semesterConfig, validation } from "../stores/main.js";
+  import { dateString } from "../misc.js";
+  let dayIndex = -1; // TODO set -1
 
   onMount(() => fetchInvigilations());
 
@@ -37,7 +37,7 @@
   <select bind:value={dayIndex} name="ancode" id="ancode">
     <option value="-1">Übersicht</option>
     {#each $semesterConfig.examDays as day, index}
-      <option value={index}>({index}) {dateString(day)} </option>
+      <option value={index}>({index}) {dateString(day)}</option>
     {/each}
   </select>
 {/if}

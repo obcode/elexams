@@ -69,5 +69,8 @@
         Aufsichtenplanung
       </a>
     </li>
+    <li>
+      <a class:selected={segment === 'nta'} href="nta">Nachteilsausgleich</a>
+    </li>
   </ul>
 </nav>

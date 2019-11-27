@@ -100,6 +100,11 @@
 </script>
 
 <style>
+  a,
+  a.clicked {
+    text-decoration: none;
+    color: black;
+  }
   .exam {
     font-size: 12px;
     display: inline-block;
@@ -230,9 +235,11 @@
   on:dragstart={dragStart}
   on:dragend={dragEnd}
   on:click={setConflicts}>
-  <span class="anCode">{exam.anCode}</span>
+  <span class="anCode">
+    <a href="/exam/{exam.anCode}">{exam.anCode}</a>
+  </span>
   <span class="personShortName" data-text={exam.lecturer.personShortName}>
-     {exam.lecturer.personShortName}
+    {exam.lecturer.personShortName}
   </span>
   <span class="studentCount">{exam.registeredStudentsCount}</span>
   <br />
@@ -244,7 +251,7 @@
     {#each exam.registeredGroups as registeredGroup, index}
       {#if index > 0},{/if}
       <span class="registeredGroup {registeredGroup.registeredGroupDegree}">
-         {registeredGroup.registeredGroupDegree}({registeredGroup.registeredGroupStudents})
+        {registeredGroup.registeredGroupDegree}({registeredGroup.registeredGroupStudents})
       </span>
     {/each}
   {:else}
