@@ -2,12 +2,8 @@ import { writable, readable } from "svelte/store";
 
 export const allAncodes = readable([], set => {
   fetch("http://localhost:8080/exams")
-    .then(response => {
-      return response.json();
-    })
-    .then(exams => {
-      return set(exams.map(e => e.anCode).sort());
-    });
+    .then(response => response.json())
+    .then(exams => set(exams.map(e => e.anCode).sort()));
   return () => {};
 });
 

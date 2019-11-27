@@ -137,7 +137,7 @@
     background-color: grey;
   }
   .notConflicting {
-    background-color: green;
+    background-color: rgb(63, 251, 63);
   }
   .maybeConflicting {
     background-color: yellow;

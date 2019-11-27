@@ -2,9 +2,7 @@ import { writable, readable } from "svelte/store";
 
 export const semesterConfig = readable(null, set => {
   fetch("http://localhost:8080/semesterConfig")
-    .then(response => {
-      return response.json();
-    })
+    .then(response => response.json())
     .then(sc => set(sc))
     .catch(error => alert("Fehler: vermutlich läuft plexams-server nicht!"));
   return () => {};
