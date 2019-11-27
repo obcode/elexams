@@ -2,38 +2,39 @@
   "name": "elexams",
   "version": "0.3.0",
   "description": "A frontend for obcode/plexams server",
-  "main": "dist/main.js",
   "private": true,
   "scripts": {
-    "start": "cross-env NODE_ENV=development electron .",
-    "dev": "rollup -cw",
-    "build": "rollup -c",
-    "postinstall": "electron-builder install-app-deps",
-    "test": "true",
-    "release": "build --publish=never",
-    "release:all": "build -mwl -p always",
-    "release:win": "build --win -p always",
-    "release:mac": "build --mac -p always",
-    "release:linux": "build --linux -p always"
+    "dev": "sapper dev",
+    "build": "sapper build --legacy",
+    "export": "sapper export --legacy",
+    "start": "node __sapper__/build",
+    "cy:run": "cypress run",
+    "cy:open": "cypress open",
+    "test": "run-p --race dev cy:run"
   },
   "repository": "https://github.com/obcode/elexams",
   "author": "Oliver Braun",
   "license": "CC0-1.0",
+  "dependencies": {
+    "compression": "^1.7.4",
+    "polka": "next",
+    "sirv": "^0.4.2"
+  },
   "devDependencies": {
-    "electron": "^7.1.2",
-    "electron-builder": "^21.2.0",
-    "rollup": "^1.27.4",
+    "npm-run-all": "^4.1.5",
+    "sapper": "^0.27.9",
+    "svelte": "^3.15.0",
+    "@babel/core": "^7.7.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.7.4",
+    "@babel/plugin-transform-runtime": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "@babel/runtime": "^7.7.4",
+    "@rollup/plugin-replace": "^2.2.1",
+    "rollup": "^1.27.5",
+    "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-svelte": "^5.1.1",
-    "rollup-plugin-typescript": "^1.0.1",
-    "svelte": "^3.15.0",
-    "tslib": "^1.10.0",
-    "typescript": "^3.7.2"
-  },
-  "dependencies": {
-    "chokidar": "^3.3.0",
-    "cross-env": "^6.0.3"
+    "rollup-plugin-terser": "^5.1.2"
   }
 }

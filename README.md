@@ -1,9 +1,9 @@
 # Elexams
 
-Planing exams with [Electron](https://electronjs.org/) and [Plexams](https://github.com/obcode/plexams).
-
-You can download the latest release for Linux, Mac or Windows from <https://github.com/obcode/elexams/releases/>.
+Planing exams with [Sapper](https://sapper.svelte.dev/) and [Plexams](https://github.com/obcode/plexams).
 
 ## Developing
 
-Clone the repo, and install dependencies with `yarn`. Then `yarn dev` to build the app and `yarn start` to open it.
+Clone the repo, and install dependencies with `yarn`. Then `yarn dev` to build and start the app.
+
+Open up [localhost:3000](http://localhost:3000) and start clicking around.
