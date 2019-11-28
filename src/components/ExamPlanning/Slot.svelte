@@ -7,6 +7,7 @@
   import { fetchValidation } from "../../stores/main.js";
   import {
     refetchExams,
+    refetchUnscheduled,
     conflictingAncodes,
     conflictingSlots,
     resetConflicting,
@@ -116,8 +117,10 @@
       fetchExams();
       fetchValidation("ValidateSchedule");
       // TODO: update von conflicts bei drag und drop funktioniert nicht richtig
-      setConflictingSlots($clickedExamAnCode);
-      conflictingAncodes.update(as => as);
+      setConflictingSlots(0);
+      conflictingAncodes.update(_ => []);
+      resetConflicting.update(_ => 0);
+      refetchUnscheduled.update(i => i + 1);
     });
   }
 </script>

@@ -9,6 +9,8 @@ export const allAncodes = readable([], set => {
 
 export const refetchExams = writable([-1, -1]);
 
+export const refetchUnscheduled = writable(0);
+
 export const conflictingAncodes = writable(0);
 
 export const conflictingSlots = writable([]);
@@ -33,6 +35,6 @@ export const clickedExamAnCode = writable(0);
 
 export const examsInSameSlot = writable([]);
 
-export const showRegisteredGroups = writable(false);
+export const showRegisteredGroups = writable(true);
 
 export const showRooms = writable(false);

@@ -117,14 +117,14 @@
     <select bind:value={ancode} on:change={setAncode} name="ancode" id="ancode">
       <option value="0">auswählen</option>
       {#each $allAncodes as ancode}
-        <option value={ancode}> {ancode} </option>
+        <option value={ancode}>{ancode}</option>
       {/each}
     </select>
   {/if}
 
   <ShowExamsByLecturer />
   <label>
-    <input type="checkbox" on:click={toggleShowRegisteredGroups} />
+    <input type="checkbox" on:click={toggleShowRegisteredGroups} checked />
     zeige Anmeldungen
   </label>
   <label>
@@ -139,7 +139,7 @@
             <th />
             {#each $semesterConfig.examDays as examDay, index}
               <th class="planTable days">
-                 {dateString(examDay)}
+                {dateString(examDay)}
                 <br />
                 ({index})
               </th>
@@ -151,7 +151,7 @@
           {#each $semesterConfig.slotsPerDay as slot, slotIndex}
             <tr>
               <td class="planTable times">
-                 {slot}
+                {slot}
                 <br />
                 ({slotIndex})
               </td>

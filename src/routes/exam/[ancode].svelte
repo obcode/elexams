@@ -21,32 +21,51 @@
 
 <script>
   export let exam;
+  import { semesterConfig } from "../../stores/main.js";
+  import { dateString } from "../../misc.js";
 </script>
 
 <style>
   .handicap {
     color: red;
   }
+  .conflict {
+    padding: 4px;
+  }
 </style>
 
-{#if exam !== null && exam !== undefined}
-  <h3>{exam.lecturer.personFullName}</h3>
-  <h1>
-    {exam.name}
-    {#if exam.slot === null}(noch nicht eingeplant){:else}: {exam.slot}{/if}
-  </h1>
-  <ol>
-    {#each exam.registeredStudents as stud}
-      <li>
-        ({stud.studentGroup}) {stud.studentFamilyname}, {stud.studentFirstname}
-        {#if stud.studentHandicap !== null}
-          <span class="handicap">
-            ({stud.studentHandicap.handicapCompensationText})
-          </span>
-        {/if}
-      </li>
-    {/each}
-  </ol>
+{#if $semesterConfig === undefined || $semesterConfig === null}
+  Loading...
 {:else}
-  <h1>Anmeldecode unbekannt!</h1>
+  {#if exam !== null && exam !== undefined}
+    <h3>{exam.lecturer.personFullName}</h3>
+    <h1>
+      {exam.name}
+      {#if exam.slot === null}
+        (noch nicht eingeplant)
+      {:else}
+        : {dateString($semesterConfig.examDays[exam.slot[0]])} ({exam.slot[0]}),
+        {$semesterConfig.slotsPerDay[exam.slot[1]]} ({exam.slot[1]})
+      {/if}
+    </h1>
+    <ol>
+      {#each exam.registeredStudents as stud}
+        <li>
+          ({stud.studentGroup}) {stud.studentFamilyname}, {stud.studentFirstname}
+          {#if stud.studentHandicap !== null}
+            <span class="handicap">
+              ({stud.studentHandicap.handicapCompensationText})
+            </span>
+          {/if}
+          {#each stud.studentAncodes as ac}
+            <span class="conflict">
+              <a href="/exam/{ac}">{ac}</a>
+            </span>
+          {/each}
+        </li>
+      {/each}
+    </ol>
+  {:else}
+    <h1>Anmeldecode unbekannt!</h1>
+  {/if}
 {/if}

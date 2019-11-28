@@ -1,5 +1,6 @@
 <script>
   import Exam from "./Exam.svelte";
+  import { refetchUnscheduled } from "../../stores/exams.js";
   let yes = true;
   let exams = [];
   const fetchUnscheduled = async () => {
@@ -7,6 +8,7 @@
     exams = await response.json();
   };
   fetchUnscheduled();
+  refetchUnscheduled.subscribe(_ => fetchUnscheduled());
 </script>
 
 <label>
