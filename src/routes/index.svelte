@@ -10,6 +10,4 @@
   <title>Plan | Elexams</title>
 </svelte:head>
 
-<main>
-  <Plan />
-</main>
+<Plan />

@@ -100,8 +100,7 @@
 </script>
 
 <style>
-  a,
-  a.clicked {
+  a {
     text-decoration: none;
     color: black;
   }
