@@ -12,7 +12,8 @@
     conflictingSlots,
     resetConflicting,
     clickedExamAnCode,
-    setConflictingSlots
+    setConflictingSlots,
+    resetAll
   } from "../../stores/exams.js";
 
   let exams = [];
@@ -116,11 +117,7 @@
       }
       fetchExams();
       fetchValidation("ValidateSchedule");
-      // TODO: update von conflicts bei drag und drop funktioniert nicht richtig
-      setConflictingSlots(0);
-      conflictingAncodes.update(_ => []);
-      resetConflicting.update(_ => 0);
-      refetchUnscheduled.update(i => i + 1);
+      resetAll();
     });
   }
 </script>

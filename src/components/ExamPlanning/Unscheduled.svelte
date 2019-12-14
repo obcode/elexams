@@ -8,7 +8,10 @@
     exams = await response.json();
   };
   fetchUnscheduled();
-  refetchUnscheduled.subscribe(_ => fetchUnscheduled());
+  refetchUnscheduled.subscribe(_ => {
+    console.log("refetching unscheduled");
+    fetchUnscheduled();
+  });
 </script>
 
 <label>

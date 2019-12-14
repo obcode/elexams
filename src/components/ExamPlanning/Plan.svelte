@@ -11,7 +11,8 @@
     showRegisteredGroups,
     showRooms,
     selectedExamAnCode,
-    clickedExamAnCode
+    clickedExamAnCode,
+    refetchUnscheduled
   } from "../../stores/exams.js";
   import { dateString, weekend } from "../../misc.js";
 
@@ -24,6 +25,7 @@
   }
 
   let ancode = 0;
+  let loading = false;
 
   function setAncode() {
     clickedExamAnCode.set(ancode);
@@ -37,11 +39,14 @@
   }
 
   async function reloadPlan() {
+    loading = true;
     const reloadResult = await fetch("http://localhost:8080/reloadPlan");
     const jsonResult = await reloadResult.json();
+    loading = false;
     if (jsonResult) {
-      refetchExams.set([]);
-      fetchValidation("ValidateSchedule");
+      // refetchExams.set([]);
+      // refetchUnscheduled.update(i => i + 1);
+      // fetchValidation("ValidateSchedule");
       if (jsonResult[0]) {
         let output = "Erfolgreich!!\n";
         for (const info of jsonResult[1]) {
@@ -104,7 +109,7 @@
   }
 </style>
 
-{#if $semesterConfig === undefined || $semesterConfig === null}
+{#if $semesterConfig === undefined || $semesterConfig === null || loading}
   Loading...
 {:else}
   <h1>

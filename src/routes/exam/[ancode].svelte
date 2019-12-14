@@ -58,9 +58,11 @@
             </span>
           {/if}
           {#each stud.studentAncodes as ac}
-            <span class="conflict">
-              <a href="/exam/{ac}">{ac}</a>
-            </span>
+            {#if ac !== exam.anCode}
+              <span class="conflict">
+                <a href="/exam/{ac}">{ac}</a>
+              </span>
+            {/if}
           {/each}
         </li>
       {/each}

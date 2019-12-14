@@ -38,3 +38,14 @@ export const examsInSameSlot = writable([]);
 export const showRegisteredGroups = writable(true);
 
 export const showRooms = writable(false);
+
+export const resetAll = () => {
+  selectedExamAnCode.set(0);
+  clickedExamAnCode.set(0);
+  examsInSameSlot.set([]);
+  conflictingAncodes.set(0);
+  conflictingSlots.set([]);
+  resetConflicting.set(0);
+  refetchUnscheduled.update(i => i + 1);
+  refetchExams.set([]);
+};
