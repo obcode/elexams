@@ -65,6 +65,9 @@
       <a class:selected={segment === 'rooms'} href="rooms">Raumplanung</a>
     </li>
     <li>
+      <a class:selected={segment === 'exams'} href="exams">Prüfungsliste</a>
+    </li>
+    <li>
       <a class:selected={segment === 'invigs'} href="invigs">
         Aufsichtenplanung
       </a>
