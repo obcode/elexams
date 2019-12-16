@@ -111,16 +111,18 @@
             {#if entry[0] !== null}
               <td rowspan={calcRowspanExam(entry[0])}>
                 <a href={mailtoLink(entry[0][0].lecturer, entry[0])}>E-Mail</a>
-                 {entry[0][0].lecturer.personFullName}
+                {entry[0][0].lecturer.personFullName}
               </td>
             {/if}
             {#if entry[1] !== null}
               <td rowspan={entry[1].handicapStudents.length}>
-                 {entry[1].name}
+                <a href="/exam/{entry[1].anCode}">
+                  {entry[1].anCode}. {entry[1].name}
+                </a>
               </td>
             {/if}
-            <td> {entry[2].studentHandicap.handicapStudentname} </td>
-            <td> {entry[2].studentHandicap.handicapCompensationText} </td>
+            <td>{entry[2].studentHandicap.handicapStudentname}</td>
+            <td>{entry[2].studentHandicap.handicapCompensationText}</td>
             {#if entry[2].studentHandicap.handicapNeedsRoomAlone}
               <td>eigener Raum</td>
             {:else}

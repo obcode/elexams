@@ -48,25 +48,57 @@
         {$semesterConfig.slotsPerDay[exam.slot[1]]} ({exam.slot[1]})
       {/if}
     </h1>
-    <ol>
-      {#each exam.registeredStudents as stud}
-        <li>
-          ({stud.studentGroup}) {stud.studentFamilyname}, {stud.studentFirstname}
-          {#if stud.studentHandicap !== null}
-            <span class="handicap">
-              ({stud.studentHandicap.handicapCompensationText})
-            </span>
-          {/if}
-          {#each stud.studentAncodes as ac}
-            {#if ac !== exam.anCode}
-              <span class="conflict">
-                <a href="/exam/{ac}">{ac}</a>
+    {#if exam.registeredStudents.length !== 0}
+      <h2>Studierende ohne Raum</h2>
+      <ol>
+        {#each exam.registeredStudents as stud}
+          <li>
+            ({stud.studentGroup}) {stud.studentFamilyname}, {stud.studentFirstname}
+            {#if stud.studentHandicap !== null}
+              <span class="handicap">
+                ({stud.studentHandicap.handicapCompensationText})
               </span>
             {/if}
+            {#each stud.studentAncodes as ac}
+              {#if ac !== exam.anCode}
+                <span class="conflict">
+                  <a href="/exam/{ac}">{ac}</a>
+                </span>
+              {/if}
+            {/each}
+          </li>
+        {/each}
+      </ol>
+    {/if}
+    {#if exam.rooms.length !== 0}
+      <h2>Geplante Räume</h2>
+      {#each exam.rooms as room}
+        <h3>
+          {room.roomID} ({room.studentsInRoom.length}/{room.maxSeats})
+          {#if room.handicapCompensation}(NTA){/if}
+          {#if room.reserveRoom}(Reserve){/if}
+        </h3>
+        <ol>
+          {#each room.studentsInRoom as stud}
+            <li>
+              ({stud.studentGroup}) {stud.studentFamilyname}, {stud.studentFirstname}
+              {#if stud.studentHandicap !== null}
+                <span class="handicap">
+                  ({stud.studentHandicap.handicapCompensationText})
+                </span>
+              {/if}
+              {#each stud.studentAncodes as ac}
+                {#if ac !== exam.anCode}
+                  <span class="conflict">
+                    <a href="/exam/{ac}">{ac}</a>
+                  </span>
+                {/if}
+              {/each}
+            </li>
           {/each}
-        </li>
+        </ol>
       {/each}
-    </ol>
+    {/if}
   {:else}
     <h1>Anmeldecode unbekannt!</h1>
   {/if}
