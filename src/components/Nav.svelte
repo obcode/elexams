@@ -75,5 +75,10 @@
     <li>
       <a class:selected={segment === 'nta'} href="nta">Nachteilsausgleich</a>
     </li>
+    <li>
+      <a class:selected={segment === 'plan'} href="plan">
+        Prüfungsplan - chronologisch
+      </a>
+    </li>
   </ul>
 </nav>
