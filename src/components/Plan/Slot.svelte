@@ -48,9 +48,11 @@
   {/if}
   <ul>
     {#each exams as exam}
-      <li>
-        <Exam {exam} />
-      </li>
+      {#if exam.plannedByMe}
+        <li>
+          <Exam {exam} />
+        </li>
+      {/if}
     {/each}
   </ul>
 {:else}
