@@ -9,7 +9,16 @@ export function dateString(date) {
   return d.toLocaleString("de-DE", options);
 }
 
-export function weekend(date) {
+export function weekend(date, examsOnSaturdays) {
   const d = new Date(date);
-  return d.getDay() === 5;
+  console.log(examsOnSaturdays)
+  return d.getDay() === (examsOnSaturdays ? 6 : 5);
+}
+
+export function isWeekend(date, examsOnSaturdays) {
+  const d = new Date(date);
+  console.log(examsOnSaturdays)
+  if (d.getDay() === 6 || d.getDay() === 7)
+    return "isWeekend"
+  else return ""
 }

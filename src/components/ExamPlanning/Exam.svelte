@@ -17,6 +17,7 @@
   import Room from "./Room.svelte";
 
   const notPlannedByMe = !exam.plannedByMe;
+  const noStuds = exam.registeredStudentsCount === 0
   const draggable = !$semesterConfig.scheduleFrozen && exam.plannedByMe;
   const reExam = exam.reExam;
   let dragged = false;
@@ -120,6 +121,9 @@
   }
   .notPlannedByMe {
     background-color: slategrey;
+  }
+  .noStuds {
+    background-color: rgb(149, 149, 149);
   }
   .conflicting {
     background-color: crimson;
@@ -225,6 +229,7 @@
   class:dragged
   class:invisible
   class:notPlannedByMe
+  class:noStuds
   class:reExam
   class:clicked
   class:conflicting

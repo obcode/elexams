@@ -14,7 +14,7 @@
     clickedExamAnCode,
     refetchUnscheduled
   } from "../../stores/exams.js";
-  import { dateString, weekend } from "../../misc.js";
+  import { dateString, weekend, isWeekend } from "../../misc.js";
 
   function toggleShowRegisteredGroups() {
     showRegisteredGroups.update(b => !b);
@@ -94,6 +94,9 @@
     background-color: rgb(176, 190, 197);
     min-width: 30px;
   }
+  .isWeekend {
+    background-color: rgb(241, 100, 100);
+  }
   .slot {
     /* padding: 5px;
     padding-top: 15px; */
@@ -148,7 +151,7 @@
                 <br />
                 ({index})
               </th>
-              {#if weekend(examDay)}
+              {#if weekend(examDay, $semesterConfig.examsOnSaturdays)}
                 <th class="planTable weekend" />
               {/if}
             {/each}
@@ -161,7 +164,7 @@
                 ({slotIndex})
               </td>
               {#each $semesterConfig.examDays as examDay, dayIndex}
-                <td class="planTable exams">
+                <td class="planTable exams {isWeekend(examDay, $semesterConfig.examsOnSaturdays)}">
                   <div id="slot_{dayIndex}_{slotIndex}" class="slot">
                     <Slot
                       {dayIndex}
@@ -169,7 +172,7 @@
                       goSlot={isGOSlot(dayIndex, slotIndex)} />
                   </div>
                 </td>
-                {#if weekend(examDay)}
+                {#if weekend(examDay, $semesterConfig.examsOnSaturdays)}
                   <td class="planTable weekend" />
                 {/if}
               {/each}
