@@ -13,7 +13,7 @@
     resetConflicting,
     clickedExamAnCode,
     setConflictingSlots,
-    resetAll
+    resetAll,
   } from "../../stores/exams.js";
 
   let exams = [];
@@ -23,12 +23,12 @@
   let notConflicting = false;
 
   const fetchExams = async () => {
-    const response = await fetch("http://localhost:8080/slot", {
+    const response = await fetch("http://127.0.0.1:8080/slot", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify([dayIndex, slotIndex])
+      body: JSON.stringify([dayIndex, slotIndex]),
     });
     exams = await response.json();
     studentCount = exams.reduce((acc, exam) => {
@@ -38,20 +38,20 @@
   };
   fetchExams();
 
-  refetchExams.subscribe(v => {
+  refetchExams.subscribe((v) => {
     if (v.length === 0 || (v[0] === dayIndex && v[1] === slotIndex)) {
       exams = [];
       fetchExams();
     }
   });
 
-  resetConflicting.subscribe(_ => {
+  resetConflicting.subscribe((_) => {
     conflicting = false;
     maybeConflicting = false;
     notConflicting = false;
   });
 
-  conflictingSlots.subscribe(allSlots => {
+  conflictingSlots.subscribe((allSlots) => {
     conflicting = false;
     maybeConflicting = false;
     notConflicting = false;
@@ -72,7 +72,7 @@
     }
   });
 
-  conflictingAncodes.subscribe(conflicts => {
+  conflictingAncodes.subscribe((conflicts) => {
     if (
       conflicts === null ||
       conflicts === undefined ||
@@ -101,16 +101,16 @@
     event.preventDefault();
     draggedOver = false;
     const exam = JSON.parse(event.dataTransfer.getData("exam"));
-    fetch("http://localhost:8080/addExam", {
+    fetch("http://127.0.0.1:8080/addExam", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         planManipAnCode: exam.anCode,
         planManipDay: dayIndex,
-        planManipSlot: slotIndex
-      })
+        planManipSlot: slotIndex,
+      }),
     }).then(() => {
       if (exam.slot !== null && exam.slot !== undefined) {
         refetchExams.set([exam.slot[0], exam.slot[1]]);
@@ -121,6 +121,31 @@
     });
   }
 </script>
+
+<div
+  class="slot"
+  class:goSlot
+  class:notConflicting
+  class:maybeConflicting
+  class:conflicting
+  on:dragover={dragOver}
+  on:dragenter={dragEnter}
+  on:dragleave={dragLeave}
+  on:drop={dragDrop}
+>
+  <span>
+    ({dayIndex}, {slotIndex})
+    {#if studentCount !== 0}- {studentCount} Studs{/if}
+  </span>
+
+  <div class="exams" class:draggedOver class:goSlot class:conflicting>
+    {#if exams.length !== 0}
+      {#each exams as exam}
+        <Exam {exam} />
+      {/each}
+    {/if}
+  </div>
+</div>
 
 <style>
   .slot {
@@ -146,29 +171,3 @@
     background-color: crimson;
   }
 </style>
-
-<div
-  class="slot"
-  class:goSlot
-  class:notConflicting
-  class:maybeConflicting
-  class:conflicting
-  on:dragover={dragOver}
-  on:dragenter={dragEnter}
-  on:dragleave={dragLeave}
-  on:drop={dragDrop}>
-
-  <span>
-    ({dayIndex}, {slotIndex})
-    {#if studentCount !== 0}- {studentCount} Studs{/if}
-  </span>
-
-  <div class="exams" class:draggedOver class:goSlot class:conflicting>
-    {#if exams.length !== 0}
-      {#each exams as exam}
-        <Exam {exam} />
-      {/each}
-    {/if}
-  </div>
-
-</div>

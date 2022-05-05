@@ -12,16 +12,16 @@
     showRooms,
     selectedExamAnCode,
     clickedExamAnCode,
-    refetchUnscheduled
+    refetchUnscheduled,
   } from "../../stores/exams.js";
   import { dateString, weekend, isWeekend } from "../../misc.js";
 
   function toggleShowRegisteredGroups() {
-    showRegisteredGroups.update(b => !b);
+    showRegisteredGroups.update((b) => !b);
   }
 
   function toggleShowRooms() {
-    showRooms.update(b => !b);
+    showRooms.update((b) => !b);
   }
 
   let ancode = 0;
@@ -40,7 +40,7 @@
 
   async function reloadPlan() {
     loading = true;
-    const reloadResult = await fetch("http://localhost:8080/reloadPlan");
+    const reloadResult = await fetch("http://127.0.0.1:8080/reloadPlan");
     const jsonResult = await reloadResult.json();
     loading = false;
     if (jsonResult) {
@@ -61,56 +61,6 @@
     }
   }
 </script>
-
-<style>
-  hr {
-    border: 1px solid red;
-  }
-  .planTable {
-    border-collapse: collapse;
-    user-select: none;
-    border: 1px solid black;
-    vertical-align: top;
-    font-size: 12px;
-  }
-  .validation {
-    vertical-align: top;
-    font-size: 12px;
-  }
-  .exams {
-    height: 30px;
-  }
-  .times {
-    width: 40px;
-    background-color: rgb(176, 190, 197);
-    text-align: center;
-  }
-  .days {
-    min-width: 200px;
-    background-color: rgb(176, 190, 197);
-    text-align: center;
-  }
-  .weekend {
-    background-color: rgb(176, 190, 197);
-    min-width: 30px;
-  }
-  .isWeekend {
-    background-color: rgb(241, 100, 100);
-  }
-  .slot {
-    /* padding: 5px;
-    padding-top: 15px; */
-    height: 100%;
-    max-width: 200px;
-  }
-  button {
-    border-radius: 12px;
-    border: 5px;
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2),
-      0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    background-color: rgb(100, 237, 237);
-  }
-</style>
 
 {#if $semesterConfig === undefined || $semesterConfig === null || loading}
   Loading...
@@ -164,12 +114,18 @@
                 ({slotIndex})
               </td>
               {#each $semesterConfig.examDays as examDay, dayIndex}
-                <td class="planTable exams {isWeekend(examDay, $semesterConfig.examsOnSaturdays)}">
+                <td
+                  class="planTable exams {isWeekend(
+                    examDay,
+                    $semesterConfig.examsOnSaturdays
+                  )}"
+                >
                   <div id="slot_{dayIndex}_{slotIndex}" class="slot">
                     <Slot
                       {dayIndex}
                       {slotIndex}
-                      goSlot={isGOSlot(dayIndex, slotIndex)} />
+                      goSlot={isGOSlot(dayIndex, slotIndex)}
+                    />
                   </div>
                 </td>
                 {#if weekend(examDay, $semesterConfig.examsOnSaturdays)}
@@ -189,3 +145,53 @@
     </tr>
   </table>
 {/if}
+
+<style>
+  hr {
+    border: 1px solid red;
+  }
+  .planTable {
+    border-collapse: collapse;
+    user-select: none;
+    border: 1px solid black;
+    vertical-align: top;
+    font-size: 12px;
+  }
+  .validation {
+    vertical-align: top;
+    font-size: 12px;
+  }
+  .exams {
+    height: 30px;
+  }
+  .times {
+    width: 40px;
+    background-color: rgb(176, 190, 197);
+    text-align: center;
+  }
+  .days {
+    min-width: 200px;
+    background-color: rgb(176, 190, 197);
+    text-align: center;
+  }
+  .weekend {
+    background-color: rgb(176, 190, 197);
+    min-width: 30px;
+  }
+  .isWeekend {
+    background-color: rgb(241, 100, 100);
+  }
+  .slot {
+    /* padding: 5px;
+    padding-top: 15px; */
+    height: 100%;
+    max-width: 200px;
+  }
+  button {
+    border-radius: 12px;
+    border: 5px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2),
+      0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color: rgb(100, 237, 237);
+  }
+</style>

@@ -1,6 +1,6 @@
 <script context="module">
   export async function preload({ params, query }) {
-    const res = await this.fetch("http://localhost:8080/exams");
+    const res = await this.fetch("http://127.0.0.1:8080/exams");
     const data = await res.json();
 
     if (res.status === 200) {
@@ -41,18 +41,6 @@
   }
 </script>
 
-<style>
-  th {
-    cursor: pointer;
-  }
-  th.active {
-    color: red;
-  }
-  tr.grey {
-    color: grey;
-  }
-</style>
-
 <h1>Prüfungsliste</h1>
 
 {#if exams !== null && exams !== undefined}
@@ -60,15 +48,17 @@
     <tr>
       <th>
         <span
-          class:active={currentFilter === 'anCode'}
-          on:click={sort('anCode')}>
+          class:active={currentFilter === "anCode"}
+          on:click={sort("anCode")}
+        >
           AnCode
         </span>
       </th>
-      <th class:active={currentFilter === 'name'} on:click={sortName}>Name</th>
+      <th class:active={currentFilter === "name"} on:click={sortName}>Name</th>
       <th
-        class:active={currentFilter === 'lecturer'}
-        on:click={sort('lecturer')}>
+        class:active={currentFilter === "lecturer"}
+        on:click={sort("lecturer")}
+      >
         PrüferIn
       </th>
     </tr>
@@ -83,3 +73,15 @@
 {:else}
   <h2>Loading...</h2>
 {/if}
+
+<style>
+  th {
+    cursor: pointer;
+  }
+  th.active {
+    color: red;
+  }
+  tr.grey {
+    color: grey;
+  }
+</style>

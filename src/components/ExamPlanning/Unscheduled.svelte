@@ -4,11 +4,11 @@
   let yes = true;
   let exams = [];
   const fetchUnscheduled = async () => {
-    const response = await fetch("http://localhost:8080/unscheduledExams");
+    const response = await fetch("http://127.0.0.1:8080/unscheduledExams");
     exams = await response.json();
   };
   fetchUnscheduled();
-  refetchUnscheduled.subscribe(_ => {
+  refetchUnscheduled.subscribe((_) => {
     console.log("refetching unscheduled");
     fetchUnscheduled();
   });

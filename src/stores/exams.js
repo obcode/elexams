@@ -1,9 +1,9 @@
 import { writable, readable } from "svelte/store";
 
-export const allAncodes = readable([], set => {
-  fetch("http://localhost:8080/exams")
-    .then(response => response.json())
-    .then(exams => set(exams.map(e => e.anCode).sort()));
+export const allAncodes = readable([], (set) => {
+  fetch("http://127.0.0.1:8080/exams")
+    .then((response) => response.json())
+    .then((exams) => set(exams.map((e) => e.anCode).sort()));
   return () => {};
 });
 
@@ -17,13 +17,13 @@ export const conflictingSlots = writable([]);
 
 export const resetConflicting = writable(0);
 
-export const setConflictingSlots = async ancode => {
-  let response = await fetch("http://localhost:8080/conflictingSlots", {
+export const setConflictingSlots = async (ancode) => {
+  let response = await fetch("http://127.0.0.1:8080/conflictingSlots", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(ancode)
+    body: JSON.stringify(ancode),
   });
   const resp = await response.json();
   conflictingSlots.set(resp);
@@ -46,6 +46,6 @@ export const resetAll = () => {
   conflictingAncodes.set(0);
   conflictingSlots.set([]);
   resetConflicting.set(0);
-  refetchUnscheduled.update(i => i + 1);
+  refetchUnscheduled.update((i) => i + 1);
   refetchExams.set([]);
 };

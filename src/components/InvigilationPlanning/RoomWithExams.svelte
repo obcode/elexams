@@ -4,7 +4,11 @@
   export let roomWithExams;
 
   import { selectedRoom, showExams } from "../../stores/rooms.js";
-  import { refetch, fetchInvigilations, fetchSlotsForDay } from "../../stores/invigilation.js";
+  import {
+    refetch,
+    fetchInvigilations,
+    fetchSlotsForDay,
+  } from "../../stores/invigilation.js";
   import { fetchValidation } from "../../stores/main.js";
   import RoomWithExam from "./RoomWithExam.svelte";
 
@@ -49,14 +53,14 @@
     const invigilation = {
       addInvigilatorID: invigilatorID,
       addInvigilatorSlot: [dayIndex, slotIndex],
-      addInvigilatorRoom: roomID
+      addInvigilatorRoom: roomID,
     };
-    fetch("http://localhost:8080/addInvigilator", {
+    fetch("http://127.0.0.1:8080/addInvigilator", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(invigilation)
+      body: JSON.stringify(invigilation),
     }).then(() => {
       // refetch.update(i => i + 1);
       fetchSlotsForDay(dayIndex);
@@ -65,6 +69,30 @@
     });
   }
 </script>
+
+{#if roomWithExams !== undefined && roomWithExams !== null && roomWithExams.length > 0}
+  <div
+    class="room {room.roomID}"
+    class:draggedOver
+    class:hasInvigilator
+    on:dragover={dragOver}
+    on:dragenter={dragEnter}
+    on:dragleave={dragLeave}
+    on:drop={dragDrop}
+  >
+    <span class="roomID"> {roomID} </span>
+    <span class="studentCount"> {studentsInRoom} / {room.maxSeats} </span>
+    {#if $showExams}
+      {#each roomWithExams as roomWithExam}
+        <RoomWithExam {roomWithExam} />
+      {/each}
+    {/if}
+    <div>
+      Aufsicht:
+      {#if hasInvigilator}{room.invigilator.invigilatorName}{:else}fehlt{/if}
+    </div>
+  </div>
+{/if}
 
 <style>
   .room {
@@ -90,26 +118,3 @@
     background-color: green;
   }
 </style>
-
-{#if roomWithExams !== undefined && roomWithExams !== null && roomWithExams.length > 0}
-  <div
-    class="room {room.roomID}"
-    class:draggedOver
-    class:hasInvigilator
-    on:dragover={dragOver}
-    on:dragenter={dragEnter}
-    on:dragleave={dragLeave}
-    on:drop={dragDrop}>
-    <span class="roomID"> {roomID} </span>
-    <span class="studentCount"> {studentsInRoom} / {room.maxSeats} </span>
-    {#if $showExams}
-      {#each roomWithExams as roomWithExam}
-        <RoomWithExam {roomWithExam} />
-      {/each}
-    {/if}
-    <div>
-      Aufsicht:
-      {#if hasInvigilator}{room.invigilator.invigilatorName}{:else}fehlt{/if}
-    </div>
-  </div>
-{/if}

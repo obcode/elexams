@@ -6,24 +6,17 @@
 
   let slotByRooms = [];
   async function fetchSlotByRooms() {
-    const resp = await fetch("http://localhost:8080/slotByRooms", {
+    const resp = await fetch("http://127.0.0.1:8080/slotByRooms", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify([dayIndex, slotIndex])
+      body: JSON.stringify([dayIndex, slotIndex]),
     });
     slotByRooms = await resp.json();
   }
   fetchSlotByRooms();
 </script>
-
-<style>
-  .slot {
-    height: 100%;
-    padding: 0px;
-  }
-</style>
 
 <div class="slot">
   {#if slotByRooms.length > 0}
@@ -32,3 +25,10 @@
     {/each}
   {/if}
 </div>
+
+<style>
+  .slot {
+    height: 100%;
+    padding: 0px;
+  }
+</style>

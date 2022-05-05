@@ -2,7 +2,7 @@
   import { clickedExamAnCode } from "../../stores/exams.js";
   let yes = true;
   let exam;
-  clickedExamAnCode.subscribe(ac => {
+  clickedExamAnCode.subscribe((ac) => {
     if (ac === 0) {
       exam = null;
     } else {
@@ -11,23 +11,17 @@
   });
   async function fetchExam(ancode) {
     if (ancode != 0) {
-      let response = await fetch("http://localhost:8080/exam", {
+      let response = await fetch("http://127.0.0.1:8080/exam", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(ancode)
+        body: JSON.stringify(ancode),
       });
       exam = await response.json();
     }
   }
 </script>
-
-<style>
-  .examName {
-    font-size: 24px;
-  }
-</style>
 
 <label>
   <input type="checkbox" bind:checked={yes} />
@@ -42,7 +36,7 @@
   <br />
   {#each exam.registeredGroups as registeredGroup, index}
     {#if index > 0},{/if}
-     {registeredGroup.registeredGroupDegree} ({registeredGroup.registeredGroupStudents})
+    {registeredGroup.registeredGroupDegree} ({registeredGroup.registeredGroupStudents})
   {/each}
   {#if Object.keys(exam.conflictingAncodes).length > 0}
     <br />
@@ -50,13 +44,18 @@
       Im gleichen Slot müssen stattfinden:
       {#each exam.sameSlot as ancode, index}
         {#if index > 0},{/if}
-         {ancode}
+        {ancode}
       {/each}
       <br />
     {/if}
     <span>
-      Konflikte zu {Object.keys(exam.conflictingAncodes).length} anderen
-      Prüfungen
+      Konflikte zu {Object.keys(exam.conflictingAncodes).length} anderen Prüfungen
     </span>
   {/if}
 {/if}
+
+<style>
+  .examName {
+    font-size: 24px;
+  }
+</style>

@@ -6,12 +6,12 @@
 
   let exams = [];
   const fetchExams = async () => {
-    const response = await fetch("http://localhost:8080/slot", {
+    const response = await fetch("http://127.0.0.1:8080/slot", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify([dayIndex, slotIndex])
+      body: JSON.stringify([dayIndex, slotIndex]),
     });
     exams = await response.json();
   };
@@ -19,26 +19,17 @@
 
   let reserve = null;
   const fetchReserve = async () => {
-    const response = await fetch("http://localhost:8080/reserveForSlot", {
+    const response = await fetch("http://127.0.0.1:8080/reserveForSlot", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify([dayIndex, slotIndex])
+      body: JSON.stringify([dayIndex, slotIndex]),
     });
     reserve = await response.json();
   };
   fetchReserve();
 </script>
-
-<style>
-  .grey {
-    color: lightgrey;
-  }
-  .person {
-    color: green;
-  }
-</style>
 
 {#if exams.length > 0}
   ({dayIndex}, {slotIndex}),
@@ -58,3 +49,12 @@
 {:else}
   <span class="grey">keine Prüfungen geplant</span>
 {/if}
+
+<style>
+  .grey {
+    color: lightgrey;
+  }
+  .person {
+    color: green;
+  }
+</style>

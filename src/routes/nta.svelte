@@ -2,7 +2,7 @@
   import { semesterConfig } from "../stores/main.js";
   let examsWithNTA;
   async function fetchExamsWithNTA() {
-    let resp = await fetch("http://localhost:8080/examsWithNTA");
+    let resp = await fetch("http://127.0.0.1:8080/examsWithNTA");
     examsWithNTA = await resp.json();
   }
   fetchExamsWithNTA();
@@ -75,30 +75,6 @@
   }
 </script>
 
-<style>
-  .center {
-    margin: auto;
-    width: 90%;
-    padding: 10px;
-  }
-  table,
-  tr,
-  td {
-    padding: 10px;
-    border: 1px solid black;
-    border-collapse: collapse;
-    user-select: none;
-    vertical-align: top;
-    font-size: 12px;
-  }
-  table {
-    border-radius: 12px;
-    border: 5px;
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2),
-      0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  }
-</style>
-
 {#if examsWithNTA === undefined}
   <h1>Loading...</h1>
 {:else}
@@ -134,3 +110,27 @@
     </table>
   </div>
 {/if}
+
+<style>
+  .center {
+    margin: auto;
+    width: 90%;
+    padding: 10px;
+  }
+  table,
+  tr,
+  td {
+    padding: 10px;
+    border: 1px solid black;
+    border-collapse: collapse;
+    user-select: none;
+    vertical-align: top;
+    font-size: 12px;
+  }
+  table {
+    border-radius: 12px;
+    border: 5px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2),
+      0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+</style>
